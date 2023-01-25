@@ -1,0 +1,9 @@
+CREATE TABLE `customer` (
+  `CustomerID` varchar(4) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Email` varchar(50) NOT NULL,
+  `CountryCode` varchar(2) NOT NULL,
+  `Budget` double NOT NULL,
+  `Used` double NOT NULL,
+  PRIMARY KEY  (`CustomerID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
