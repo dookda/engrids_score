@@ -1,0 +1,39 @@
+GET https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code&client_id=JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s&redirect_uri=http://localhost:3000/login/&scope=cmuitaccount.basicinfo
+
+
+###
+POST /v1/GetToken.aspx HTTP/1.1
+Host: oauth.cmu.ac.th
+content-type: application/x-www-form-urlencoded
+Authorization: Basic JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s
+
+grant_type=client_credentials
+&scope=cmuitaccount.basicinfo
+
+###
+Client ID:JDxvGSrJv9RbXrxGQAsj0x4wKtm3hedf2qw3Cr2s
+Client Secret:U7cz62qhfR6vQw4nJaVpEyAq5JjG5EdzHaA2uEAU
+
+###
+POST http://localhost/ds-api/getdata
+content-type: application/json
+
+{
+    "cmuitaccount": "sakda.homhuan@cmu.ac.th"
+}
+
+
+###
+POST http://localhost/ds-api/listuser
+content-type: application/json
+
+{
+    "cmuitaccount": "sakda.homhuan@cmu.ac.th"
+}
+
+###
+GET http://localhost:3100/shp2pgsql/abmnVLYLHSgKelTebvUS9DQRuKFWtR6BS/abmnVLYLHSgKelTebvUS9DQRuKFWtR6BS.zip
+
+
+###
+GET http://localhost:3100/
