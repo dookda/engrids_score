@@ -15,12 +15,13 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 215 (class 1259 OID 16398)
+-- TOC entry 215 (class 1259 OID 16427)
 -- Name: score; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.score (
     id integer NOT NULL,
+    pid text,
     sub_code text,
     sub_name text,
     sub_sect text,
@@ -42,7 +43,7 @@ CREATE TABLE public.score (
 ALTER TABLE public.score OWNER TO postgres;
 
 --
--- TOC entry 214 (class 1259 OID 16397)
+-- TOC entry 214 (class 1259 OID 16426)
 -- Name: score_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -67,7 +68,7 @@ ALTER SEQUENCE public.score_id_seq OWNED BY public.score.id;
 
 
 --
--- TOC entry 3175 (class 2604 OID 16401)
+-- TOC entry 3175 (class 2604 OID 16430)
 -- Name: score id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -75,7 +76,7 @@ ALTER TABLE ONLY public.score ALTER COLUMN id SET DEFAULT nextval('public.score_
 
 
 --
--- TOC entry 3319 (class 0 OID 16398)
+-- TOC entry 3319 (class 0 OID 16427)
 -- Dependencies: 215
 -- Data for Name: score; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -91,7 +92,7 @@ ALTER TABLE ONLY public.score ALTER COLUMN id SET DEFAULT nextval('public.score_
 SELECT pg_catalog.setval('public.score_id_seq', 1, false);
 
 
--- Completed on 2023-01-26 12:08:26 +07
+-- Completed on 2023-01-26 18:31:23 +07
 
 --
 -- PostgreSQL database dump complete
