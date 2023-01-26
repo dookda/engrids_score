@@ -1,7 +1,7 @@
 version: '3.3'
 services:
-  postgis:
-    image: postgis/postgis
+  postgres:
+    image: postgres
     container_name: score_postgis
     restart: always
     environment:
@@ -9,7 +9,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
     volumes:
-      - ./postgres/db/:/docker-entrypoint-initdb.d
+      - ./postgres/:/docker-entrypoint-initdb.d
     ports:
       - 5433:5432
 
@@ -19,8 +19,7 @@ services:
     working_dir: /app/nodejs
     restart: always
     depends_on:
-      - postgis
-      - flask
+      - postgres
     environment:
       - NODE_ENV=production
     volumes:
