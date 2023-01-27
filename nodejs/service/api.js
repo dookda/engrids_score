@@ -56,8 +56,13 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     let { sub_code } = req.body;
     let { sub_name } = req.body;
     let { sub_sect } = req.body;
-    insetXlsxtoDb(req.file.filename, pid, sub_code, sub_name, sub_sect).then(r =>
-        res.redirect('http://localhost/index.html?status=' + r)
+    insetXlsxtoDb(req.file.filename, pid, sub_code, sub_name, sub_sect).then(r => {
+        if (r == "success") {
+            res.redirect('http://localhost/score/index.html')
+        } else {
+            res.redirect('http://localhost/input/index.html?status=' + r)
+        }
+    }
     );
 });
 
