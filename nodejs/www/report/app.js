@@ -1,7 +1,14 @@
 let showList = () => {
     axios.post("/api/courselist").then(r => {
         r.data.data.forEach(e => {
-            document.getElementById("list").innerHTML += `<button class="btn btn-success m-1" onclick="showTable('${e.sub_code}')">วิชา ${e.sub_code}</button>`
+            document.getElementById("list").innerHTML += `<div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">รายวิชา ${e.sub_code} ${e.sub_name}</p>
+                <button class="btn btn-success m-1" onclick="showCourse('${e.sub_code}')">แสดง</button>
+                <button class="btn btn-warning m-1" onclick="deleteCourse('${e.sub_code}')">ลบ</button>
+            </div>
+          </div>`
         });
     })
 }
@@ -10,9 +17,16 @@ let gotoInput = () => {
     location.href = "./../input/index.html";
 }
 
+let deleteCourse = (sub_code) => {
+    axios.post("/api/deletecourse", { sub_code }).then(r => {
+        location.reload();
+    })
+}
+
 let table = $('#table').DataTable();
-let showTable = (sub_code) => {
-    $('#table').DataTable().destroy();
+let showCourse = (sub_code) => {
+    $('#table').DataTable().destroy()
+
     var table = $('#table').DataTable({
         ajax: {
             type: 'POST',

@@ -57,7 +57,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     let { sub_sect } = req.body;
     insetXlsxtoDb(req.file.filename, pid, sub_code, sub_name, sub_sect).then(r => {
         if (r == "success") {
-            res.redirect('http://localhost/score/index.html')
+            res.redirect('http://localhost/report/index.html')
         } else {
             res.redirect('http://localhost/input/index.html?status=' + r)
         }
@@ -66,7 +66,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 
 app.post("/api/courselist", (req, res) => {
     const { cmuitaccount, sub_code } = req.body
-    const sql = `SELECT DISTINCT sub_code FROM score`;
+    const sql = `SELECT DISTINCT sub_code, sub_name FROM score`;
     // const sql = `SELECT DISTINCT sub_code FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
     // console.log(sql);
     db.query(sql).then(r => {
@@ -84,6 +84,18 @@ app.post("/api/getdata", (req, res) => {
     db.query(sql).then(r => {
         res.status(200).json({
             data: r.rows
+        });
+    });
+});
+
+app.post("/api/deletecourse", (req, res) => {
+    const { cmuitaccount, sub_code } = req.body
+    const sql = `DELETE FROM score WHERE sub_code='${sub_code}'`;
+    // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
+    // console.log(sql);
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: "remove success"
         });
     });
 });
