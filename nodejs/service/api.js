@@ -61,9 +61,21 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     );
 });
 
+app.post("/api/courselist", (req, res) => {
+    const { cmuitaccount, sub_code } = req.body
+    const sql = `SELECT DISTINCT sub_code FROM score`;
+    // const sql = `SELECT DISTINCT sub_code FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
+    // console.log(sql);
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows
+        });
+    });
+});
+
 app.post("/api/getdata", (req, res) => {
     const { cmuitaccount, sub_code } = req.body
-    const sql = `SELECT * FROM score`;
+    const sql = `SELECT * FROM score WHERE sub_code='${sub_code}'`;
     // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
     // console.log(sql);
     db.query(sql).then(r => {

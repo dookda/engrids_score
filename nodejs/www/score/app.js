@@ -1,11 +1,19 @@
+let showList = () => {
+    axios.post("/api/courselist").then(r => {
+        r.data.data.forEach(e => {
+            document.getElementById("list").innerHTML += `<button class="btn btn-success m-1" onclick="showTable('${e.sub_code}')">วิชา ${e.sub_code}</button>`
+        });
+    })
+}
 
-
-let showTable = () => {
+var table = $('#table').DataTable();
+let showTable = (sub_code) => {
+    $('#table').DataTable().destroy();
     var table = $('#table').DataTable({
         ajax: {
             type: 'POST',
             url: '/api/getdata',
-            data: { data: "aa" },
+            data: { sub_code: sub_code },
             dataSrc: 'data',
             // cache: true,
             destroy: true
@@ -15,11 +23,9 @@ let showTable = () => {
             { data: 'sub_code' },
             { data: 'sub_name' },
             { data: 'sub_sect' },
-            { data: 'cmuitaccount' },
             { data: 'student_id' },
             { data: 'firstname_th' },
             { data: 'lastname_th' },
-            { data: 'organization_name_th' },
             { data: 'score1' },
             { data: 'score2' },
             { data: 'score3' },
@@ -48,5 +54,5 @@ let showTable = () => {
 }
 
 $(document).ready(function () {
-    showTable()
+    showList()
 });
