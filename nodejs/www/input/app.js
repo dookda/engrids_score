@@ -20,3 +20,8 @@ if (param == "success") {
     // $("#statusInfo").on("show.bs.modal")
     console.log("ok");
 }
+
+
+let gotoReport = () => {
+    location.href = "./../report/index.html";
+}

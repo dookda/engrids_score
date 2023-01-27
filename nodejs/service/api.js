@@ -50,7 +50,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-
 app.post("/api/upload", upload.single("file"), (req, res) => {
     let pid = "a" + new Date().valueOf();
     let { sub_code } = req.body;
@@ -62,8 +61,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
         } else {
             res.redirect('http://localhost/input/index.html?status=' + r)
         }
-    }
-    );
+    });
 });
 
 app.post("/api/courselist", (req, res) => {

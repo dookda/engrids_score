@@ -6,7 +6,11 @@ let showList = () => {
     })
 }
 
-var table = $('#table').DataTable();
+let gotoInput = () => {
+    location.href = "./../input/index.html";
+}
+
+let table = $('#table').DataTable();
 let showTable = (sub_code) => {
     $('#table').DataTable().destroy();
     var table = $('#table').DataTable({
