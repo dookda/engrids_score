@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <form action="/api/upload" method="post" enctype="multipart/form-data" on>
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label">เลือกไฟล์</label>
+                <input class="form-control" type="file" name="file" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">รหัสวิชา</label>
+                <input class="form-control" type="text" name="sub_code" id="sub_code" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">ชื่อวิชา</label>
+                <input class="form-control" type="text" name="sub_name" id="sub_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">section</label>
+                <select class="form-select" name="sub_sect" id="sub_sect">
+                    <option value="01">01</option selected>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                </select>
+            </div>
+            <hr>
+
+            <input class="btn btn-success" type="submit" value="Upload">
+        </form>
+    </div>
+</body>
+
+<div class="modal fade" id="statusInfo" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p id="statusText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./app.js"></script>
+
+</html>
