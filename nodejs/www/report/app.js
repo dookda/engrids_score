@@ -54,12 +54,7 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
-if (code) {
-    showList();
-} else {
-    // $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
-    gotoLogin();
-}
+
 
 let showList = () => {
     axios.post("/scoreapi/courselist").then(r => {
@@ -94,7 +89,7 @@ let showCourse = (sub_code) => {
     var table = $('#table').DataTable({
         ajax: {
             type: 'POST',
-            url: '/api/getdata',
+            url: '/scoreapi/getdata',
             data: { sub_code: sub_code },
             dataSrc: 'data',
             // cache: true,
@@ -135,6 +130,13 @@ let showCourse = (sub_code) => {
     });
 }
 
+
+
 $(document).ready(function () {
-    showList()
+    if (code) {
+        showList();
+    } else {
+        // $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+        gotoLogin();
+    }
 });

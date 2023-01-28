@@ -18,7 +18,7 @@ let getCookie = (cname) => {
 const code = getCookie("score_code");
 const firstname_TH = getCookie("score_firstname_TH");
 const lastname_TH = getCookie("score_lastname_TH");
-const student_id = getCookie("score_student_id");
+const itaccounttype_TH = getCookie("score_itaccounttype_th");
 const organization_name_TH = getCookie("score_organization_name_TH");
 const cmuitaccount = getCookie("score_cmuitaccount");
 const auth = getCookie("score_auth");
@@ -37,12 +37,14 @@ let gotoLogin = () => {
 }
 
 let gotoLogout = () => {
-    document.cookie = "open_code=; max-age=0; path=/;";
-    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
-    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
-    document.cookie = "open_student_id=; max-age=0; path=/;";
-    document.cookie = "open_auth=; max-age=0; path=/;";
-    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    document.cookie = "score_code=; max-age=0; path=/;";
+    document.cookie = "score_firstname_TH=; max-age=0; path=/;";
+    document.cookie = "score_lastname_TH=; max-age=0; path=/;";
+    document.cookie = "score_student_id=; max-age=0; path=/;";
+    document.cookie = "score_cmuitaccount=; max-age=0; path=/;";
+    document.cookie = "score_itaccounttype_th=; max-age=0; path=/;";
+    document.cookie = "score_auth=; max-age=0; path=/;";
+    document.cookie = "score_organization_name_TH=; max-age=0; path=/;";
     gotoIndex()
 }
 
@@ -58,32 +60,36 @@ let gotoReport = () => {
     location.href = "./../report/index.html";
 }
 
-if (code) {
-    showList();
+if (code && itaccounttype_TH == "บุคลากร") {
+
+    const currentUrl = new URL(window.location.href);
+    const param = currentUrl.searchParams.get("status");
+
+    const statusModal = new bootstrap.Modal('#statusInfo', {
+        keyboard: false
+    })
+
+
+
+    document.getElementById("lecturer_fname").value = firstname_TH;
+    document.getElementById("lecturer_lname").value = lastname_TH;
+    document.getElementById("lecturer_account").value = itaccounttype_TH;
+
+    if (param == "success") {
+        document.getElementById("statusText").innerHTML = "อัพโหลดข้อมูลสำเร็จ";
+        statusModal.show();
+    } else if (param == "invalidform") {
+        document.getElementById("statusText").innerHTML = "ฟอร์ม excel ไม่ถูกต้อง";
+        statusModal.show();
+    } else if (param == "error") {
+        document.getElementById("statusText").innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่";
+        statusModal.show();
+    } else {
+        console.log("ok");
+    }
 } else {
-    // $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);
+    gotoLogout();
     gotoLogin();
 }
-
-const currentUrl = new URL(window.location.href);
-const param = currentUrl.searchParams.get("status");
-
-const statusModal = new bootstrap.Modal('#statusInfo', {
-    keyboard: false
-})
-
-
-// if (param == "success") {
-//     document.getElementById("statusText").innerHTML = "อัพโหลดข้อมูลสำเร็จ";
-//     statusModal.show();
-// } else if (param == "invalidform") {
-//     document.getElementById("statusText").innerHTML = "ฟอร์ม excel ไม่ถูกต้อง";
-//     statusModal.show();
-// } else if (param == "error") {
-//     document.getElementById("statusText").innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่";
-//     statusModal.show();
-// } else {
-//     console.log("ok");
-// }
 
 

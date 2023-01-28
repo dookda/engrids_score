@@ -10,45 +10,6 @@ const multer = require("multer");
 
 
 // Oauth CMU
-let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
-    let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, auth, dt)
-    VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', 'user',now())`
-    datapool.query(sql).then(() => console.log("insert ok"))
-}
-
-let selectMemberOne = (profile) => {
-    return new Promise((resolve, reject) => {
-        let sql = `SELECT * FROM formmember WHERE cmuitaccount='${profile.cmuitaccount}'`;
-        datapool.query(sql).then(r => {
-            if (r.rows.length < 1) {
-                insertMember(profile.student_id, profile.firstname_TH, profile.lastname_TH, profile.cmuitaccount, profile.organization_code, profile.organization_name_TH, profile.itaccounttype_TH);
-                resolve("user");
-            } else {
-                if (r.rows[0].auth == "admin") {
-                    resolve("admin");
-                } else {
-                    resolve("user");
-                }
-            }
-        })
-    })
-}
-
-const checkUser = (req, res, next) => {
-    const { cmuitaccount } = req.body;
-    console.log(cmuitaccount);
-    const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}' and auth='admin'`;
-    datapool.query(sql, (e, r) => {
-        if (r.rows.length > 0) {
-
-            res.cmuitaccount = cmuitaccount;
-            next()
-        } else {
-            console.log("not row");
-        }
-    })
-}
-
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
@@ -74,17 +35,8 @@ const loginMiddleware = (req, res, next) => {
 
         axios(config)
             .then((resp) => {
-                console.log(resp.data);
-                // const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
-                // selectMemberOne(resp.data).then(r => {
-                //     console.log(r);
-                //     req.status = {
-                //         token: hsah,
-                //         data: resp.data,
-                //         auth: r
-                //     }
-                //     next()
-                // });
+                res.status(200).json({ data: resp.data });
+                next();
             })
             .catch((error) => {
                 req.status = "valid";

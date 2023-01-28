@@ -28,11 +28,11 @@ $(window).on('load', function () {
 });
 
 if (code) {
-    console.log(code);
+    // console.log(code);
     axios.post('/scoreapi/gettoken', { code }).then(r => {
         console.log(r);
-        // setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, r.data.data.cmuitaccount, r.data.data.itaccounttype_TH, r.data.auth, 30)
-        // window.location.replace("./../" + state);
+        setCookie(code, r.data.data.firstname_TH, r.data.data.lastname_TH, r.data.data.student_id, r.data.data.organization_name_TH, r.data.data.cmuitaccount, r.data.data.itaccounttype_TH, r.data.auth, 30)
+        window.location.replace("./../" + state);
     })
 }
 

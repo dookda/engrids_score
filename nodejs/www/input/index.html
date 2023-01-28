@@ -12,8 +12,10 @@
 
 <body>
     <div class="container mt-4">
-        <form action="/api/upload" method="post" enctype="multipart/form-data" on>
-
+        <form action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
+            <input type="text" name="lecturer_fname" id="lecturer_fname">
+            <input type="text" name="lecturer_lname" id="lecturer_lname">
+            <input type="text" name="lecturer_account" id="lecturer_account">
             <div class="mb-3">
                 <label for="formFile" class="form-label">เลือกไฟล์</label>
                 <input class="form-control" type="file" name="file" required>
