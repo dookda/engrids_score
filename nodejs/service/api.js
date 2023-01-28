@@ -3,12 +3,13 @@ const app = express.Router();
 const pg = require('pg');
 const xlsx = require('xlsx');
 const db = require("./db").db;
-
+const axios = require('axios');
+const qs = require('qs');
+const crypto = require('crypto');
 const multer = require("multer");
 
 
 // Oauth CMU
-
 let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
     let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, auth, dt)
     VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', 'user',now())`
@@ -61,6 +62,7 @@ const loginMiddleware = (req, res, next) => {
     const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
     axios.post(url, qs.stringify(data), headers).then((r) => {
+
         var config = {
             method: 'get',
             url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
@@ -72,16 +74,17 @@ const loginMiddleware = (req, res, next) => {
 
         axios(config)
             .then((resp) => {
-                const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
-                selectMemberOne(resp.data).then(r => {
-                    console.log(r);
-                    req.status = {
-                        token: hsah,
-                        data: resp.data,
-                        auth: r
-                    }
-                    next()
-                });
+                console.log(resp.data);
+                // const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
+                // selectMemberOne(resp.data).then(r => {
+                //     console.log(r);
+                //     req.status = {
+                //         token: hsah,
+                //         data: resp.data,
+                //         auth: r
+                //     }
+                //     next()
+                // });
             })
             .catch((error) => {
                 req.status = "valid";
@@ -91,7 +94,7 @@ const loginMiddleware = (req, res, next) => {
     })
 }
 
-app.post("/ds-chekauth/gettoken", loginMiddleware, (req, res) => {
+app.post("/scoreapi/gettoken", loginMiddleware, (req, res) => {
     // console.log(req.status);
     res.status(200).json(req.status)
 })
