@@ -6,7 +6,98 @@ const db = require("./db").db;
 
 const multer = require("multer");
 
-// const axios = require('axios');
+
+// Oauth CMU
+
+let insertMember = (student_id, firstname_th, lastname_th, cmuitaccount, organization_code, organization_name, itaccounttype_th) => {
+    let sql = `INSERT INTO formmember(student_id,firstname_th,lastname_th,cmuitaccount,organization_code,organization_name,itaccounttype_th, auth, dt)
+    VALUES('${student_id}','${firstname_th}','${lastname_th}','${cmuitaccount}','${organization_code}','${organization_name}','${itaccounttype_th}', 'user',now())`
+    datapool.query(sql).then(() => console.log("insert ok"))
+}
+
+let selectMemberOne = (profile) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT * FROM formmember WHERE cmuitaccount='${profile.cmuitaccount}'`;
+        datapool.query(sql).then(r => {
+            if (r.rows.length < 1) {
+                insertMember(profile.student_id, profile.firstname_TH, profile.lastname_TH, profile.cmuitaccount, profile.organization_code, profile.organization_name_TH, profile.itaccounttype_TH);
+                resolve("user");
+            } else {
+                if (r.rows[0].auth == "admin") {
+                    resolve("admin");
+                } else {
+                    resolve("user");
+                }
+            }
+        })
+    })
+}
+
+const checkUser = (req, res, next) => {
+    const { cmuitaccount } = req.body;
+    console.log(cmuitaccount);
+    const sql = `SELECT gid FROM formmember WHERE cmuitaccount='${cmuitaccount}' and auth='admin'`;
+    datapool.query(sql, (e, r) => {
+        if (r.rows.length > 0) {
+
+            res.cmuitaccount = cmuitaccount;
+            next()
+        } else {
+            console.log("not row");
+        }
+    })
+}
+
+const loginMiddleware = (req, res, next) => {
+    const data = {
+        code: req.body.code,
+        redirect_uri: "http://localhost/login/index.html",
+        client_id: "vfue5sa0rvFkqkxQyj3KEjjqhrVrphFQBd2Mf0Nz",
+        client_secret: "g07dxSNJN48n6WXk6d7RGWNgZ1UkuXJJGECQnf2B",
+        grant_type: "authorization_code"
+    };
+
+    const url = "https://oauth.cmu.ac.th/v1/GetToken.aspx"
+    const headers = { 'content-type': 'application/x-www-form-urlencoded' }
+
+    axios.post(url, qs.stringify(data), headers).then((r) => {
+        var config = {
+            method: 'get',
+            url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
+            headers: {
+                'Authorization': 'Bearer ' + r.data.access_token,
+                'Cookie': 'BIGipServermisapi_pool=536964618.20480.0000'
+            }
+        };
+
+        axios(config)
+            .then((resp) => {
+                const hsah = crypto.createHash('md5').update(`${resp.data.cmuitaccount}${Date.now()}`).digest("hex")
+                selectMemberOne(resp.data).then(r => {
+                    console.log(r);
+                    req.status = {
+                        token: hsah,
+                        data: resp.data,
+                        auth: r
+                    }
+                    next()
+                });
+            })
+            .catch((error) => {
+                req.status = "valid";
+            });
+    }).catch((error) => {
+        req.status = "valid";
+    })
+}
+
+app.post("/ds-chekauth/gettoken", loginMiddleware, (req, res) => {
+    // console.log(req.status);
+    res.status(200).json(req.status)
+})
+
+
+// upload
 let insetXlsxtoDb = (fname, pid, sub_code, sub_name, sub_sect) => {
     const workbook = xlsx.readFile('uploads/' + fname);
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -50,7 +141,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage });
-app.post("/api/upload", upload.single("file"), (req, res) => {
+app.post("/scoreapi/upload", upload.single("file"), (req, res) => {
     let pid = "a" + new Date().valueOf();
     let { sub_code } = req.body;
     let { sub_name } = req.body;
@@ -64,7 +155,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     });
 });
 
-app.post("/api/courselist", (req, res) => {
+app.post("/scoreapi/courselist", (req, res) => {
     const { cmuitaccount, sub_code } = req.body
     const sql = `SELECT DISTINCT sub_code, sub_name FROM score`;
     // const sql = `SELECT DISTINCT sub_code FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
@@ -76,7 +167,7 @@ app.post("/api/courselist", (req, res) => {
     });
 });
 
-app.post("/api/getdata", (req, res) => {
+app.post("/scoreapi/getdata", (req, res) => {
     const { cmuitaccount, sub_code } = req.body
     const sql = `SELECT * FROM score WHERE sub_code='${sub_code}'`;
     // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
@@ -88,7 +179,7 @@ app.post("/api/getdata", (req, res) => {
     });
 });
 
-app.post("/api/deletecourse", (req, res) => {
+app.post("/scoreapi/deletecourse", (req, res) => {
     const { cmuitaccount, sub_code } = req.body
     const sql = `DELETE FROM score WHERE sub_code='${sub_code}'`;
     // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
