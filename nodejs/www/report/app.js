@@ -42,7 +42,7 @@ let gotoInput = () => {
 }
 
 let gotoIndex = () => {
-    location.href = "./index.html";
+    location.href = "./../index.html";
 }
 
 let showList = () => {

@@ -135,6 +135,20 @@ app.post("/scoreapi/getdata", getUserinfo, (req, res) => {
     });
 });
 
+
+app.post("/scoreapi/getscore", getUserinfo, (req, res) => {
+    // const { lecturer_account, sub_code } = req.body;
+    // console.log(req.info.data);
+    // const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
+    const sql = `SELECT * FROM score WHERE student_id='620510295'`;
+    db.query(sql).then(r => {
+        res.status(200).json({
+            data: r.rows,
+            info: req.info.data
+        });
+    });
+});
+
 app.post("/scoreapi/deletecourse", getUserinfo, (req, res) => {
     const { lecturer_account, sub_code } = req.body
     const sql = `DELETE FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
