@@ -15,13 +15,8 @@ let getCookie = (cname) => {
     return "";
 }
 
-const code = getCookie("score_code");
-const firstname_TH = getCookie("score_firstname_TH");
-const lastname_TH = getCookie("score_lastname_TH");
-const student_id = getCookie("score_student_id");
-const organization_name_TH = getCookie("score_organization_name_TH");
-const cmuitaccount = getCookie("score_cmuitaccount");
-const auth = getCookie("score_auth");
+const token = getCookie("score_token");
+const lecturer_account = getCookie("score_cmuitaccount");
 
 let refreshPage = () => {
     location.reload(true);
@@ -37,12 +32,8 @@ let gotoLogin = () => {
 }
 
 let gotoLogout = () => {
-    document.cookie = "open_code=; max-age=0; path=/;";
-    document.cookie = "open_firstname_TH=; max-age=0; path=/;";
-    document.cookie = "open_lastname_TH=; max-age=0; path=/;";
-    document.cookie = "open_student_id=; max-age=0; path=/;";
-    document.cookie = "open_auth=; max-age=0; path=/;";
-    document.cookie = "open_organization_name_TH=; max-age=0; path=/;";
+    document.cookie = "score_token=; max-age=0; path=/;";
+    document.cookie = "score_cmuitaccount=; max-age=0; path=/;";
     gotoIndex()
 }
 
@@ -54,30 +45,32 @@ let gotoIndex = () => {
     location.href = "./index.html";
 }
 
-
-
 let showList = () => {
-    axios.post("/scoreapi/courselist").then(r => {
-        r.data.data.forEach(e => {
-            document.getElementById("list").innerHTML += `<div class="card mt-1 mb-2">
-            <div class="card-body">
-                <div class="row"> 
-                    <div class="col-sm-6 align-self-center">
-                        <span class="card-text ">รายวิชา ${e.sub_code} ${e.sub_name}</span>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-success m-1" onclick="showCourse('${e.sub_code}')">แสดงคะแนน</button>
-                        <button class="btn btn-warning m-1" onclick="deleteCourse('${e.sub_code}')">ลบ</button>
+    axios.post("/scoreapi/courselist", { token, lecturer_account }).then(r => {
+        document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
+
+        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
+            r.data.data.forEach(e => {
+                document.getElementById("list").innerHTML += `<div class="card mt-1 mb-2">
+                <div class="card-body">
+                    <div class="row"> 
+                        <div class="col-sm-6 align-self-center">
+                            <span class="card-text ">รายวิชา ${e.sub_code} ${e.sub_name}</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-success m-1" onclick="showCourse('${e.sub_code}')">แสดงคะแนน</button>
+                            <button class="btn btn-warning m-1" onclick="deleteCourse('${e.sub_code}')">ลบ</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-          </div>`
-        });
+              </div>`
+            });
+        }
     })
 }
 
 let deleteCourse = (sub_code) => {
-    axios.post("/scoreapi/deletecourse", { sub_code }).then(r => {
+    axios.post("/scoreapi/deletecourse", { token, lecturer_account, sub_code }).then(r => {
         location.reload();
     })
 }
@@ -85,12 +78,11 @@ let deleteCourse = (sub_code) => {
 let table = $('#table').DataTable();
 let showCourse = (sub_code) => {
     $('#table').DataTable().destroy()
-
     var table = $('#table').DataTable({
         ajax: {
             type: 'POST',
             url: '/scoreapi/getdata',
-            data: { sub_code: sub_code },
+            data: { token, lecturer_account, sub_code: sub_code },
             dataSrc: 'data',
             // cache: true,
             destroy: true
@@ -130,10 +122,8 @@ let showCourse = (sub_code) => {
     });
 }
 
-
-
 $(document).ready(function () {
-    if (code) {
+    if (token) {
         showList();
     } else {
         // $('#profile').html(`<a href="#" onclick="gotoLogin()"><i class="bx bx-exit"></i><span class="ff-noto">เข้าสู่ระบบ</span></a>`);

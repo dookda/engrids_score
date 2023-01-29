@@ -36,4 +36,4 @@ GET http://localhost:3100/shp2pgsql/abmnVLYLHSgKelTebvUS9DQRuKFWtR6BS/abmnVLYLHS
 
 
 ###
-GET http://localhost:3100/
+GET http://localhost/test

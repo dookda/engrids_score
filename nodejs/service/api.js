@@ -23,37 +23,41 @@ const loginMiddleware = (req, res, next) => {
     const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
     axios.post(url, qs.stringify(data), headers).then((r) => {
+        res.status(200).json(r.data.access_token);
 
-        var config = {
-            method: 'get',
-            url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
-            headers: {
-                'Authorization': 'Bearer ' + r.data.access_token,
-                'Cookie': 'BIGipServermisapi_pool=536964618.20480.0000'
-            }
-        };
-
-        axios(config)
-            .then((resp) => {
-                res.status(200).json({ data: resp.data });
-                next();
-            })
-            .catch((error) => {
-                req.status = "valid";
-            });
     }).catch((error) => {
         req.status = "valid";
     })
 }
 
 app.post("/scoreapi/gettoken", loginMiddleware, (req, res) => {
-    // console.log(req.status);
     res.status(200).json(req.status)
 })
 
+let getUserinfo = (req, res, next) => {
+    const { token } = req.body
+    let config = {
+        method: 'get',
+        url: 'https://misapi.cmu.ac.th/cmuitaccount/v1/api/cmuitaccount/basicinfo',
+        headers: {
+            'Authorization': 'Bearer ' + token,
+            'Cookie': 'BIGipServermisapi_pool=536964618.20480.0000'
+        }
+    }; 3
+    axios(config).then(resp => {
+        req.info = resp;
+        next();
+    })
+}
+
+app.post("/scoreapi/getinfo", getUserinfo, (req, res) => {
+    res.status(200).json({
+        info: req.info.data
+    });
+})
 
 // upload
-let insetXlsxtoDb = (fname, pid, sub_code, sub_name, sub_sect) => {
+let insetXlsxtoDb = (fname, lecturer_fname, lecturer_lname, lecturer_account, pid, sub_code, sub_name, sub_sect) => {
     const workbook = xlsx.readFile('uploads/' + fname);
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const data = xlsx.utils.sheet_to_json(sheet, { range: 6, raw: true });
@@ -71,8 +75,8 @@ let insetXlsxtoDb = (fname, pid, sub_code, sub_name, sub_sect) => {
                     let score4 = r["4"] ? r["4"] : null;
                     let score5 = r["5"] ? r["5"] : null;
                     let score6 = r["6"] ? r["6"] : null;
-                    let sql = `INSERT INTO score(pid, sub_code, sub_name, sub_sect, student_id,firstname_th, lastname_th, score1, score2, score3, score4, score5, score6, dt)
-                    VALUES('${pid}','${sub_code}','${sub_name}','${sub_sect}','${student_id}','${firstname_th}','${lastname_th}',${score1},${score2},${score3},${score4},${score5},${score6},now())`;
+                    let sql = `INSERT INTO score(lecturer_fname, lecturer_lname, lecturer_account,pid, sub_code, sub_name, sub_sect, student_id,firstname_th, lastname_th, score1, score2, score3, score4, score5, score6, dt)
+                    VALUES('${lecturer_fname}','${lecturer_lname}','${lecturer_account}','${pid}','${sub_code}','${sub_name}','${sub_sect}','${student_id}','${firstname_th}','${lastname_th}',${score1},${score2},${score3},${score4},${score5},${score6},now())`;
                     // console.log(sql);
                     db.query(sql).then(() => console.log("insert ok"));
                 });
@@ -98,10 +102,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 app.post("/scoreapi/upload", upload.single("file"), (req, res) => {
     let pid = "a" + new Date().valueOf();
-    let { sub_code } = req.body;
-    let { sub_name } = req.body;
-    let { sub_sect } = req.body;
-    insetXlsxtoDb(req.file.filename, pid, sub_code, sub_name, sub_sect).then(r => {
+    let { lecturer_fname, lecturer_lname, lecturer_account, sub_code, sub_name, sub_sect } = req.body;
+    insetXlsxtoDb(req.file.filename, lecturer_fname, lecturer_lname, lecturer_account, pid, sub_code, sub_name, sub_sect).then(r => {
         if (r == "success") {
             res.redirect('http://localhost/report/index.html')
         } else {
@@ -110,39 +112,35 @@ app.post("/scoreapi/upload", upload.single("file"), (req, res) => {
     });
 });
 
-app.post("/scoreapi/courselist", (req, res) => {
-    const { cmuitaccount, sub_code } = req.body
-    const sql = `SELECT DISTINCT sub_code, sub_name FROM score`;
-    // const sql = `SELECT DISTINCT sub_code FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
-    // console.log(sql);
+
+app.post("/scoreapi/courselist", getUserinfo, (req, res) => {
+    const { lecturer_account } = req.body;
+    const sql = `SELECT DISTINCT sub_code, sub_name FROM score WHERE lecturer_account='${lecturer_account}' `;
+
     db.query(sql).then(r => {
         res.status(200).json({
-            data: r.rows
+            data: r.rows,
+            info: req.info.data
         });
     });
 });
 
-app.post("/scoreapi/getdata", (req, res) => {
-    const { cmuitaccount, sub_code } = req.body
-    const sql = `SELECT * FROM score WHERE sub_code='${sub_code}'`;
-    // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
-    // console.log(sql);
+
+app.post("/scoreapi/getdata", getUserinfo, (req, res) => {
+    const { lecturer_account, sub_code } = req.body;
+
+    const sql = `SELECT * FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
     db.query(sql).then(r => {
-        res.status(200).json({
-            data: r.rows
-        });
+        res.status(200).json({ data: r.rows });
     });
 });
 
-app.post("/scoreapi/deletecourse", (req, res) => {
-    const { cmuitaccount, sub_code } = req.body
-    const sql = `DELETE FROM score WHERE sub_code='${sub_code}'`;
-    // const sql = `SELECT * FROM score WHERE cmuitaccount='${cmuitaccount}' AND sub_code='${sub_code}'`;
-    // console.log(sql);
+app.post("/scoreapi/deletecourse", getUserinfo, (req, res) => {
+    const { lecturer_account, sub_code } = req.body
+    const sql = `DELETE FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
+
     db.query(sql).then(r => {
-        res.status(200).json({
-            data: "remove success"
-        });
+        res.status(200).json({ data: "remove success" });
     });
 });
 
