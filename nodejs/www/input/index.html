@@ -36,6 +36,7 @@
                                 <span class="form-label" id="username"></span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="gotoReport()">ดูคะแนน</a></li>
                                 <li><a class="dropdown-item" href="#" onclick="gotoLogout()">logout</a></li>
                             </ul>
                         </li>
@@ -45,12 +46,20 @@
         </div>
     </nav>
     <div class="container mt-4">
-        <form action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
+        <div class="card">
+            <div class="card-body">
+                ดาวโหลด <a href="./studentlist_template.xlsx">template</a> หรือ
+                <a href="https://www1.reg.cmu.ac.th/registrationoffice/searchcourse.php">reg cmu</a> โดยเลือก excel
+                เป็นแบบ Student Point Record <br>
+                <img src="./Screenshot 2566-01-30 at 08.19.22.png" alt="" srcset="">
+            </div>
+        </div>
+        <form class="mt-4" action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
             <input type="hidden" name="lecturer_fname" id="lecturer_fname">
             <input type="hidden" name="lecturer_lname" id="lecturer_lname">
             <input type="hidden" name="lecturer_account" id="lecturer_account">
             <div class="mb-3">
-                <label for="formFile" class="form-label">เลือกไฟล์</label>
+                <label for="formFile" class="form-label">เลือกไฟล์ Excel</label>
                 <input class="form-control" type="file" name="file" required>
             </div>
 
@@ -75,9 +84,8 @@
                 </select>
             </div>
 
-
             <input class="btn btn-success m-1" type="submit" value="Upload">
-            <button class="btn btn-light m-1" type="button" onclick="gotoReport()">รายการคะแนน</button>
+            <button class="btn btn-light m-1" type="button" onclick="gotoReport()">ดูคะแนน</button>
 
         </form>
     </div>
