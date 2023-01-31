@@ -15,7 +15,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 217 (class 1259 OID 16397)
+-- TOC entry 217 (class 1259 OID 16404)
 -- Name: score_header; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -33,12 +33,12 @@ CREATE TABLE public.score_header (
     firstname_th text,
     lastname_th text,
     organization_name_th text,
-    score1 numeric,
-    score2 numeric,
-    score3 numeric,
-    score4 numeric,
-    score5 numeric,
-    score6 numeric,
+    score1 text,
+    score2 text,
+    score3 text,
+    score4 text,
+    score5 text,
+    score6 text,
     dt timestamp without time zone
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE public.score_header (
 ALTER TABLE public.score_header OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 16396)
+-- TOC entry 216 (class 1259 OID 16403)
 -- Name: score_header_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -71,7 +71,7 @@ ALTER SEQUENCE public.score_header_id_seq OWNED BY public.score_header.id;
 
 
 --
--- TOC entry 3179 (class 2604 OID 16400)
+-- TOC entry 3179 (class 2604 OID 16407)
 -- Name: score_header id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -79,7 +79,7 @@ ALTER TABLE ONLY public.score_header ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
--- TOC entry 3323 (class 0 OID 16397)
+-- TOC entry 3323 (class 0 OID 16404)
 -- Dependencies: 217
 -- Data for Name: score_header; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -92,10 +92,10 @@ ALTER TABLE ONLY public.score_header ALTER COLUMN id SET DEFAULT nextval('public
 -- Name: score_header_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.score_header_id_seq', 1, false);
+SELECT pg_catalog.setval('public.score_header_id_seq', 2, true);
 
 
--- Completed on 2023-01-31 14:51:15 +07
+-- Completed on 2023-01-31 17:12:29 +07
 
 --
 -- PostgreSQL database dump complete
