@@ -49,7 +49,7 @@ let showList = () => {
     axios.post("/scoreapi/courselist", { token, lecturer_account }).then(r => {
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
-        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
+        if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
             r.data.data.forEach(e => {
                 document.getElementById("list").innerHTML += `<div class="card mt-1 mb-2">
                 <div class="card-body">
@@ -74,6 +74,8 @@ let deleteCourse = (sub_code) => {
         location.reload();
     })
 }
+
+
 
 let table = $('#table').DataTable();
 let showCourse = (sub_code) => {
