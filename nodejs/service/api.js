@@ -75,13 +75,16 @@ let insetXlsxtoDb = (fname, lecturer_fname, lecturer_lname, lecturer_account, pi
                 // console.log(rowValues, rowNum);
                 if (rowNum > 6) {
                     let sql = `INSERT INTO score(lecturer_fname, lecturer_lname, lecturer_account,pid, sub_code, sub_name, sub_sect, student_id,firstname_th, lastname_th, score1, score2, score3, score4, score5, score6, dt)
-                VALUES('${lecturer_fname}','${lecturer_lname}','${lecturer_account}','${pid}','${sub_code}','${sub_name}','${sub_sect}',
-                '${rowValues[1]}','${rowValues[2]}','${rowValues[3]}',${rowValues[4]},${rowValues[5]},${rowValues[6]},${rowValues[7]},${rowValues[8]},${rowValues[9]},now())`;
-                    console.log(sql);
-
+                                VALUES('${lecturer_fname}','${lecturer_lname}','${lecturer_account}','${pid}','${sub_code}','${sub_name}','${sub_sect}',
+                                '${rowValues[1]}','${rowValues[2]}','${rowValues[3]}',${rowValues[4]},${rowValues[5]},${rowValues[6]},${rowValues[7]},${rowValues[8]},${rowValues[9]},now())`;
                     db.query(sql).then(() => console.log("insert ok"));
+                    // console.log(sql);
                 } else {
-
+                    let sql = `INSERT INTO score_header(lecturer_fname, lecturer_lname, lecturer_account,pid, sub_code, sub_name, sub_sect, student_id,firstname_th, lastname_th, score1, score2, score3, score4, score5, score6, dt)
+                    VALUES('${lecturer_fname}','${lecturer_lname}','${lecturer_account}','${pid}','${sub_code}','${sub_name}','${sub_sect}',
+                    '${rowValues[1]}','${rowValues[2]}','${rowValues[3]}','${rowValues[4]}','${rowValues[5]}','${rowValues[6]}','${rowValues[7]}','${rowValues[8]}','${rowValues[9]}',now())`;
+                    db.query(sql).then(() => console.log("insert ok"));
+                    // console.log(sql);
                 }
             }
             resolve("success")
