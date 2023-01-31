@@ -49,7 +49,7 @@ let showList = () => {
     axios.post("/scoreapi/courselist", { token, lecturer_account }).then(r => {
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
-        if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
+        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
             r.data.data.forEach(e => {
                 document.getElementById("list").innerHTML += `<div class="card mt-1 mb-2">
                 <div class="card-body">
@@ -75,12 +75,25 @@ let deleteCourse = (sub_code) => {
     })
 }
 
-
-
 let table = $('#table').DataTable();
+let showCourseHeader = (sub_code) => {
+    // console.log(table);
+    axios.post("/scoreapi/getdata_header", { token, lecturer_account, sub_code: sub_code }).then(r => {
+        var i = 0;
+        for (const [key, value] of Object.entries(r.data.data[0])) {
+            // console.log(`${key}: ${value}`);
+            if (i > 6 && i < 13) {
+                $('#table').DataTable().columns(i).header().to$().text(value);
+            }
+            i++;
+        }
+    })
+}
+
+
 let showCourse = (sub_code) => {
     $('#table').DataTable().destroy()
-    var table = $('#table').DataTable({
+    $('#table').DataTable({
         ajax: {
             type: 'POST',
             url: '/scoreapi/getdata',
@@ -122,6 +135,8 @@ let showCourse = (sub_code) => {
         // scrollX: true,
         // order: [[5, 'asc']],
     });
+
+    showCourseHeader(sub_code);
 }
 
 $(document).ready(function () {

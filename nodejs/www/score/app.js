@@ -70,43 +70,13 @@ $.extend(true, $.fn.dataTable.defaults, {
         "emptyTable": "ไม่พบข้อมูล..."
     }
 });
-table = $('#table').DataTable({
-    ajax: {
-        type: 'POST',
-        url: '/scoreapi/getscore',
-        data: { token },
-        dataSrc: 'data',
-        // cache: true,
-        destroy: true
-    },
-    columns: [
-        { data: 'student_id' },
-        { data: 'firstname_th' },
-        { data: 'lastname_th' },
-        { data: 'score1' },
-        { data: 'score2' },
-        { data: 'score3' },
-        { data: 'score4' },
-        { data: 'score5' },
-        { data: 'score6' }
-    ],
-    scrollX: true,
-    searching: false,
-    bLengthChange: false,
-    bInfo: false,
-    bPaginate: false,
-    columnDefs: [
-        { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-    ],
-
-});
 
 
 if (token) {
-    axios.post("/scoreapi/getscore", { token }).then(r => {
-        r.data.data.forEach(i => {
-            // console.log(i)
-            document.getElementById("scorelist").innerHTML = `
+    axios.post("/scoreapi/getscore_header", { token }).then(r => {
+        r.data.data.forEach((i, k) => {
+            console.log(i)
+            document.getElementById("scorelist").innerHTML += `<p></p>
             <div class="col-12 col-lg-12">
                         <div class="icon-box2">
                             <div class="icon"><i class="bi bi-book"></i></div> <br>
@@ -116,7 +86,7 @@ if (token) {
                             <div class="lable"> ครั้งที่ 1 : ${i.score1}  คะแนน</div>
                             <br>
                             <div class="table-responsive">
-                                <table id="table2" class="display expandable-table" style="width:100%">
+                                <table id="table${k}" class="display expandable-table" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>รหัสนักศึกษา</th>
@@ -134,42 +104,48 @@ if (token) {
                             </div>
                         </div>  
                     </div>`
+        })
 
-            $('#table2').DataTable({
-                ajax: {
-                    type: 'POST',
-                    url: '/scoreapi/getscore',
-                    data: { token },
-                    dataSrc: 'data',
-                    // cache: true,
-                    destroy: true
-                },
-                columns: [
-                    { data: 'student_id' },
-                    { data: 'firstname_th' },
-                    { data: 'lastname_th' },
-                    { data: 'score1' },
-                    { data: 'score2' },
-                    { data: 'score3' },
-                    { data: 'score4' },
-                    { data: 'score5' },
-                    { data: 'score6' }
-                ],
-                scrollX: true,
-                searching: false,
-                bLengthChange: false,
-                bInfo: false,
-                bPaginate: false,
-                columnDefs: [
-                    { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-                ],
+    })
 
-            });
+    axios.post("/scoreapi/getscore", { token }).then(r => {
+        r.data.data.forEach((i, k) => {
+            console.log(i, k)
+            // $('#table' + k).DataTable({
+            //     ajax: {
+            //         type: 'POST',
+            //         url: '/scoreapi/getscore',
+            //         data: { token },
+            //         dataSrc: 'data',
+            //         // cache: true,
+            //         destroy: true
+            //     },
+            //     columns: [
+            //         { data: 'student_id' },
+            //         { data: 'firstname_th' },
+            //         { data: 'lastname_th' },
+            //         { data: 'score1' },
+            //         { data: 'score2' },
+            //         { data: 'score3' },
+            //         { data: 'score4' },
+            //         { data: 'score5' },
+            //         { data: 'score6' }
+            //     ],
+            //     scrollX: true,
+            //     searching: false,
+            //     bLengthChange: false,
+            //     bInfo: false,
+            //     bPaginate: false,
+            //     columnDefs: [
+            //         { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+            //     ],
+
+            // });
 
         });
 
 
-        if (r.data.info.itaccounttype_TH !== "บุคลากร") {
+        if (r.data.info.itaccounttype_TH == "บุคลากร") {
             document.getElementById("profile").innerHTML = `
                 <ul class="navbar">
                 <a class="getstarted scrollto" href="#"> ${r.data.info.firstname_TH} ${r.data.info.lastname_TH} </a>

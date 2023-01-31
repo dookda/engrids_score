@@ -163,6 +163,14 @@ app.post("/scoreapi/courselist", getUserinfo, (req, res) => {
     });
 });
 
+app.post("/scoreapi/getdata_header", getUserinfo, (req, res) => {
+    const { lecturer_account, sub_code } = req.body;
+
+    const sql = `SELECT pid,sub_code,sub_name,sub_sect,student_id,firstname_th,lastname_th,score1,score2,score3,score4,score5,score6,dt FROM score_header WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
+    db.query(sql).then(r => {
+        res.status(200).json({ data: r.rows });
+    });
+});
 
 app.post("/scoreapi/getdata", getUserinfo, (req, res) => {
     const { lecturer_account, sub_code } = req.body;
@@ -189,7 +197,7 @@ app.post("/scoreapi/getscore", getUserinfo, (req, res) => {
 
 app.post("/scoreapi/getscore_header", getUserinfo, (req, res) => {
     // const { lecturer_account, sub_code } = req.body;
-    // console.log(req.info.data);
+    console.log(req.info.data);
     // const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
     const sql = `SELECT * FROM score_header WHERE student_id='${req.info.data.student_id}'`;
     db.query(sql).then(r => {
