@@ -178,7 +178,7 @@ app.post("/scoreapi/getscore", getUserinfo, (req, res) => {
     // const { lecturer_account, sub_code } = req.body;
     // console.log(req.info.data);
     // const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
-    const sql = `SELECT * FROM score WHERE student_id='620510295'`;
+    const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
     db.query(sql).then(r => {
         res.status(200).json({
             data: r.rows,

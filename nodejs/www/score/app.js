@@ -49,35 +49,151 @@ let gotoReport = () => {
     location.href = "./../report/index.html";
 }
 
+
+$.extend(true, $.fn.dataTable.defaults, {
+    "language": {
+        "sProcessing": "กำลังดำเนินการ...",
+        "sLengthMenu": "แสดง_MENU_ แถว",
+        "sZeroRecords": "ไม่พบข้อมูล",
+        "sInfo": "แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว",
+        "sInfoEmpty": "แสดง 0 ถึง 0 จาก 0 แถว",
+        "sInfoFiltered": "(กรองข้อมูล _MAX_ ทุกแถว)",
+        "sInfoPostFix": "",
+        "sSearch": "ค้นหา:",
+        "sUrl": "",
+        "oPaginate": {
+            "sFirst": "เริ่มต้น",
+            "sPrevious": "ก่อนหน้า",
+            "sNext": "ถัดไป",
+            "sLast": "สุดท้าย"
+        },
+        "emptyTable": "ไม่พบข้อมูล..."
+    }
+});
+table = $('#table').DataTable({
+    ajax: {
+        type: 'POST',
+        url: '/scoreapi/getscore',
+        data: { token },
+        dataSrc: 'data',
+        // cache: true,
+        destroy: true
+    },
+    columns: [
+        { data: 'student_id' },
+        { data: 'firstname_th' },
+        { data: 'lastname_th' },
+        { data: 'score1' },
+        { data: 'score2' },
+        { data: 'score3' },
+        { data: 'score4' },
+        { data: 'score5' },
+        { data: 'score6' }
+    ],
+    scrollX: true,
+    searching: false,
+    bLengthChange: false,
+    bInfo: false,
+    bPaginate: false,
+    columnDefs: [
+        { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+    ],
+
+});
+
+
 if (token) {
     axios.post("/scoreapi/getscore", { token }).then(r => {
         r.data.data.forEach(i => {
-            document.getElementById("scorelist").innerHTML = `<div class="card mb-2">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-2">
-                        <div class="lable">คะแนนเก็บ รายวิชา ${i.sub_code} ${i.sub_name} section ${i.sub_sect} : ${i.score1}  คะแนน</div>
-                    </div>
-                </div>
-            </div>`
+            // console.log(i)
+            document.getElementById("scorelist").innerHTML = `
+            <div class="col-12 col-lg-12">
+                        <div class="icon-box2">
+                            <div class="icon"><i class="bi bi-book"></i></div> <br>
+                            <h4 class="title">${i.sub_code} ${i.sub_name}</h4>
+                            <div class="lable">คะแนนเก็บ รายวิชา ${i.sub_code} ${i.sub_name} section ${i.sub_sect} </div>
+                            <br>
+                            <div class="lable"> ครั้งที่ 1 : ${i.score1}  คะแนน</div>
+                            <br>
+                            <div class="table-responsive">
+                                <table id="table2" class="display expandable-table" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>รหัสนักศึกษา</th>
+                                            <th>ชื่อ</th>
+                                            <th>นามสกุล</th>
+                                            <th>ครั้งที่ 1</th>
+                                            <th>ครั้งที่ 2</th>
+                                            <th>ครั้งที่ 3</th>
+                                            <th>ครั้งที่ 4</th>
+                                            <th>ครั้งที่ 5</th>
+                                            <th>ครั้งที่ 6</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>  
+                    </div>`
+
+            $('#table2').DataTable({
+                ajax: {
+                    type: 'POST',
+                    url: '/scoreapi/getscore',
+                    data: { token },
+                    dataSrc: 'data',
+                    // cache: true,
+                    destroy: true
+                },
+                columns: [
+                    { data: 'student_id' },
+                    { data: 'firstname_th' },
+                    { data: 'lastname_th' },
+                    { data: 'score1' },
+                    { data: 'score2' },
+                    { data: 'score3' },
+                    { data: 'score4' },
+                    { data: 'score5' },
+                    { data: 'score6' }
+                ],
+                scrollX: true,
+                searching: false,
+                bLengthChange: false,
+                bInfo: false,
+                bPaginate: false,
+                columnDefs: [
+                    { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+                ],
+
+            });
+
         });
 
-        if (r.data.info.itaccounttype_TH == "บุคลากร") {
-            document.getElementById("profile").innerHTML = `<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-            aria-expanded="false"> <span class="form-label">${r.data.info.firstname_TH} ${r.data.info.lastname_TH}</span></a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="gotoInput()">กรอกคะแนน</a></li>
-                <li><a class="dropdown-item" href="#" onclick="gotoReport()">ดูคะแนน</a></li>
-                <li><a class="dropdown-item" href="#" onclick="gotoLogout()">logout</a></li>
-        </ul>`
+
+        if (r.data.info.itaccounttype_TH !== "บุคลากร") {
+            document.getElementById("profile").innerHTML = `
+                <ul class="navbar">
+                <a class="getstarted scrollto" href="#"> ${r.data.info.firstname_TH} ${r.data.info.lastname_TH} </a>
+                <li><a class="nav-link scrollto" href="#" onclick="gotoInput()">กรอกคะแนน</a></li>
+                <li><a class="nav-link scrollto" href="#" onclick="gotoReport()">ดูคะแนน</a></li>
+                
+                <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"> <i class="bx bx-log-out"
+                style="font-size: larger;"></i> &nbsp; ออกจากระบบ</a></li>
+
+            </ul>`
         } else {
-            document.getElementById("profile").innerHTML = `<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false"> <span class="form-label">${r.data.info.firstname_TH} ${r.data.info.lastname_TH}</span></a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" onclick="gotoLogout()">logout</a></li>
+            document.getElementById("profile").innerHTML = `<a class="getstarted scrollto" href="#"> ${r.data.info.firstname_TH} ${r.data.info.lastname_TH} </a>
+                <ul class="navbar">
+                <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"> <i class="bx bx-log-out"
+                style="font-size: larger;"></i> &nbsp; ออกจากระบบ</a></li>
             </ul>`
         }
 
     });
 } else {
-    document.getElementById("profile").innerHTML = `<button class="btn btn-info" onclick="gotoLogin()" >เข้าสู่ระบบ</button>`
+    document.getElementById("profile").innerHTML = `
+    <ul class="navbar">
+    <li><a class="getstarted scrollto" href="#" onclick="gotoLogin()" id="profile"> <i class="bx bx-log-out"
+    style="font-size: larger;"></i> &nbsp; เข้าสู่ระบบ</a></li>
+    </ul>`
 }
+
