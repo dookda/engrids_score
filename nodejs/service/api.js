@@ -2,6 +2,7 @@ const express = require('express');
 const app = express.Router();
 const pg = require('pg');
 const xlsx = require('xlsx');
+const XLSX = require('xlsx');
 const db = require("./db").db;
 const axios = require('axios');
 const qs = require('qs');
@@ -56,12 +57,46 @@ app.post("/scoreapi/getinfo", getUserinfo, (req, res) => {
     });
 })
 
-// upload
 let insetXlsxtoDb = (fname, lecturer_fname, lecturer_lname, lecturer_account, pid, sub_code, sub_name, sub_sect) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const workbook = xlsx.readFile('uploads/' + fname);
+            // const workbook = XLSX.readFile('./uploads/test.xlsx');
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            var range = XLSX.utils.decode_range(sheet['!ref']);
+            for (var rowNum = range.s.r + 6; rowNum <= range.e.r; rowNum++) {
+                var rowValues = [];
+                for (var colNum = range.s.c; colNum <= range.e.c; colNum++) {
+                    var cellAddress = XLSX.utils.encode_cell({ c: colNum, r: rowNum });
+                    var cell = sheet[cellAddress];
+                    var cellValue = cell ? cell.v : null;
+                    rowValues.push(cellValue);
+                }
+                // console.log(rowValues, rowNum);
+                if (rowNum > 6) {
+                    let sql = `INSERT INTO score(lecturer_fname, lecturer_lname, lecturer_account,pid, sub_code, sub_name, sub_sect, student_id,firstname_th, lastname_th, score1, score2, score3, score4, score5, score6, dt)
+                VALUES('${lecturer_fname}','${lecturer_lname}','${lecturer_account}','${pid}','${sub_code}','${sub_name}','${sub_sect}',
+                '${rowValues[1]}','${rowValues[2]}','${rowValues[3]}',${rowValues[4]},${rowValues[5]},${rowValues[6]},${rowValues[7]},${rowValues[8]},${rowValues[9]},now())`;
+                    console.log(sql);
+
+                    db.query(sql).then(() => console.log("insert ok"));
+                } else {
+
+                }
+            }
+            resolve("success")
+        } catch (error) {
+            resolve("error")
+        }
+    })
+}
+
+// upload
+let insetXlsxtoDb2 = (fname, lecturer_fname, lecturer_lname, lecturer_account, pid, sub_code, sub_name, sub_sect) => {
     const workbook = xlsx.readFile('uploads/' + fname);
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = xlsx.utils.sheet_to_json(sheet, { range: 6, raw: true });
 
+    const data = xlsx.utils.sheet_to_json(sheet, { range: 6, raw: true });
     return new Promise((resolve, reject) => {
         if (data[0]["ที่"], data[0]["รหัสนักศึกษา"]) {
             try {
