@@ -89,11 +89,13 @@ let insetXlsxtoDb = (fname, lecturer_fname, lecturer_lname, lecturer_account, pi
             }
 
             // remove excel
-            fs.unlinkSync(workbook);
+            setTimeout(() => {
+                fs.unlinkSync(String('uploads/' + fname));
+            }, 1000)
 
-            resolve("success")
+            resolve("success");
         } catch (error) {
-            resolve("error")
+            resolve("error");
         }
     })
 }
@@ -221,5 +223,7 @@ app.post("/scoreapi/deletecourse", getUserinfo, (req, res) => {
         res.status(200).json({ data: "remove success" });
     });
 });
+
+
 
 module.exports = app;

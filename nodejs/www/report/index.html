@@ -34,6 +34,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
+                                <input type="text" id="sub">
                                 <span class="form-label" id="username"></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -81,6 +82,28 @@
                             </tr>
                         </thead>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ยืนยันการลบ<br>
+                    รายวิชา <b><span id="subname"></span></b>
+                    <input type="hidden" id="sub_code">
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                        onclick="deleteCourse()">ยืนยัน</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">ยกเลิก</button>
                 </div>
             </div>
         </div>

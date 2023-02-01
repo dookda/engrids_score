@@ -59,7 +59,7 @@ let showList = () => {
                         </div>
                         <div class="col-sm-6">
                             <button class="btn btn-success m-1" onclick="showCourse('${e.sub_code}')">แสดงคะแนน</button>
-                            <button class="btn btn-warning m-1" onclick="deleteCourse('${e.sub_code}')">ลบ</button>
+                            <button class="btn btn-warning m-1" onclick="modalConfirm('${e.sub_code}', '${e.sub_name}')">ลบ</button>
                         </div>
                     </div>
                 </div>
@@ -69,9 +69,22 @@ let showList = () => {
     })
 }
 
-let deleteCourse = (sub_code) => {
+var modal = new bootstrap.Modal(document.getElementById('modal'), {
+    keyboard: false,
+    backdrop: 'static'
+})
+
+let modalConfirm = (sub_code, sub_name) => {
+    document.getElementById("sub_code").value = sub_code
+    document.getElementById("subname").innerHTML = sub_code + " " + sub_name
+    modal.show();
+}
+
+let deleteCourse = () => {
+    let sub_code = document.getElementById("sub_code").value;
     axios.post("/scoreapi/deletecourse", { token, lecturer_account, sub_code }).then(r => {
-        location.reload();
+        modal.hide();
+        refreshPage();
     })
 }
 
