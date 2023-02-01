@@ -53,7 +53,7 @@ if (token) {
         // console.log(r);
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
-        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
+        if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
             const currentUrl = new URL(window.location.href);
             const param = currentUrl.searchParams.get("status");
 

@@ -175,7 +175,7 @@ app.post("/scoreapi/getdata_header", getUserinfo, (req, res) => {
 app.post("/scoreapi/getdata", getUserinfo, (req, res) => {
     const { lecturer_account, sub_code } = req.body;
 
-    const sql = `SELECT * FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
+    const sql = `SELECT *,   TO_CHAR(dt, 'DD-MM-YYYY') as date  FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
     db.query(sql).then(r => {
         res.status(200).json({ data: r.rows });
     });
@@ -196,10 +196,11 @@ app.post("/scoreapi/getscore", getUserinfo, (req, res) => {
 });
 
 app.post("/scoreapi/getscore_header", getUserinfo, (req, res) => {
-    // const { lecturer_account, sub_code } = req.body;
-    console.log(req.info.data);
+    const { sub_code } = req.body;
+    // console.log(req.info.data);
     // const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
-    const sql = `SELECT * FROM score_header WHERE student_id='${req.info.data.student_id}'`;
+    const sql = `SELECT * FROM score_header WHERE sub_code='${sub_code}'`;
+    console.log(sql);
     db.query(sql).then(r => {
         res.status(200).json({
             data: r.rows,
