@@ -49,7 +49,6 @@ let gotoReport = () => {
     location.href = "./../report/index.html";
 }
 
-
 $.extend(true, $.fn.dataTable.defaults, {
     "language": {
         "sProcessing": "กำลังดำเนินการ...",
@@ -75,9 +74,9 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 if (token) {
     axios.post("/scoreapi/getscore", { token }).then(r => {
-        var sub_code;
-        r.data.data.forEach((i, k) => {
-            console.log(i)
+        // var sub_code;
+        r.data.data.forEach(async (i, k) => {
+            // console.log(i, k)
             document.getElementById("scorelist").innerHTML += `<p></p>
             <div class="col-12 col-lg-12">
                         <div class="icon-box2">
@@ -92,12 +91,12 @@ if (token) {
                                     <th>รหัสนักศึกษา</th>
                                     <th>ชื่อ</th>
                                     <th>นามสกุล</th>
-                                    <th>ครั้งที่ 1</th>
-                                    <th>ครั้งที่ 2</th>
-                                    <th>ครั้งที่ 3</th>
-                                    <th>ครั้งที่ 4</th>
-                                    <th>ครั้งที่ 5</th>
-                                    <th>ครั้งที่ 6</th>
+                                    <th><span id="score1_${k}"></span></th>
+                                    <th><span id="score2_${k}"></span></th>
+                                    <th><span id="score3_${k}"></span></th>
+                                    <th><span id="score4_${k}"></span></th>
+                                    <th><span id="score5_${k}"></span></th>
+                                    <th><span id="score6_${k}"></span></th>
                                 </tr>
                                 <tr>
                                     <td>${i.student_id}</td>
@@ -115,16 +114,22 @@ if (token) {
                     </div>
                         </div>  
                     </div>`
-            sub_code = i.sub_code
-        });
 
-        axios.post("/scoreapi/getscore_header", { token, sub_code }).then(r => {
-            console.log(r)
-            r.data.data.forEach((i, k) => {
-                console.log(i)
+            // sub_code = i.sub_code
+            await axios.post("/scoreapi/getscore_header", { token, sub_code: i.sub_code }).then(r => {
+                // console.log(r)
+                r.data.data.forEach((i, k) => {
+                    console.log(i, i.score1, k)
+                    document.getElementById(`score1_${k}`).innerHTML = i.score1;
+                    document.getElementById(`score2_${k}`).innerHTML = i.score2;
+                    document.getElementById(`score3_${k}`).innerHTML = i.score3;
+                    document.getElementById(`score4_${k}`).innerHTML = i.score4;
+                    document.getElementById(`score5_${k}`).innerHTML = i.score5;
+                    document.getElementById(`score6_${k}`).innerHTML = i.score6;
+                })
+
             })
-
-        })
+        });
 
         if (r.data.info.itaccounttype_TH !== "บุคลากร") {
             document.getElementById("profile").innerHTML = `
@@ -144,8 +149,8 @@ if (token) {
                 style="font-size: larger;"></i> &nbsp; ออกจากระบบ</a></li>
             </ul>`
         }
-
     });
+
 } else {
     document.getElementById("profile").innerHTML = `
     <ul class="navbar">

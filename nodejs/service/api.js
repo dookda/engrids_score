@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express.Router();
-const pg = require('pg');
 const xlsx = require('xlsx');
 const XLSX = require('xlsx');
 const db = require("./db").db;
@@ -8,6 +7,7 @@ const axios = require('axios');
 const qs = require('qs');
 const crypto = require('crypto');
 const multer = require("multer");
+const fs = require('fs');
 
 
 // Oauth CMU
@@ -87,6 +87,10 @@ let insetXlsxtoDb = (fname, lecturer_fname, lecturer_lname, lecturer_account, pi
                     // console.log(sql);
                 }
             }
+
+            // remove excel
+            fs.unlinkSync(workbook);
+
             resolve("success")
         } catch (error) {
             resolve("error")
