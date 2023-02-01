@@ -72,8 +72,10 @@ $.extend(true, $.fn.dataTable.defaults, {
 });
 
 
+
 if (token) {
-    axios.post("/scoreapi/getscore_header", { token }).then(r => {
+    axios.post("/scoreapi/getscore", { token }).then(r => {
+        var sub_code;
         r.data.data.forEach((i, k) => {
             console.log(i)
             document.getElementById("scorelist").innerHTML += `<p></p>
@@ -83,69 +85,48 @@ if (token) {
                             <h4 class="title">${i.sub_code} ${i.sub_name}</h4>
                             <div class="lable">คะแนนเก็บ รายวิชา ${i.sub_code} ${i.sub_name} section ${i.sub_sect} </div>
                             <br>
-                            <div class="lable"> ครั้งที่ 1 : ${i.score1}  คะแนน</div>
-                            <br>
                             <div class="table-responsive">
-                                <table id="table${k}" class="display expandable-table" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>รหัสนักศึกษา</th>
-                                            <th>ชื่อ</th>
-                                            <th>นามสกุล</th>
-                                            <th>ครั้งที่ 1</th>
-                                            <th>ครั้งที่ 2</th>
-                                            <th>ครั้งที่ 3</th>
-                                            <th>ครั้งที่ 4</th>
-                                            <th>ครั้งที่ 5</th>
-                                            <th>ครั้งที่ 6</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
+                        <table id="table${k}" class="display expandable-table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>รหัสนักศึกษา</th>
+                                    <th>ชื่อ</th>
+                                    <th>นามสกุล</th>
+                                    <th>ครั้งที่ 1</th>
+                                    <th>ครั้งที่ 2</th>
+                                    <th>ครั้งที่ 3</th>
+                                    <th>ครั้งที่ 4</th>
+                                    <th>ครั้งที่ 5</th>
+                                    <th>ครั้งที่ 6</th>
+                                </tr>
+                                <tr>
+                                    <td>${i.student_id}</td>
+                                    <td>${i.firstname_th}</td>
+                                    <td>${i.lastname_th}</td>
+                                    <td>${i.score1}</td>
+                                    <td>${i.score2}</td>
+                                    <td>${i.score3}</td>
+                                    <td>${i.score4}</td>
+                                    <td>${i.score5}</td>
+                                    <td>${i.score6}</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                         </div>  
                     </div>`
-        })
-
-    })
-
-    axios.post("/scoreapi/getscore", { token }).then(r => {
-        r.data.data.forEach((i, k) => {
-            console.log(i, k)
-            // $('#table' + k).DataTable({
-            //     ajax: {
-            //         type: 'POST',
-            //         url: '/scoreapi/getscore',
-            //         data: { token },
-            //         dataSrc: 'data',
-            //         // cache: true,
-            //         destroy: true
-            //     },
-            //     columns: [
-            //         { data: 'student_id' },
-            //         { data: 'firstname_th' },
-            //         { data: 'lastname_th' },
-            //         { data: 'score1' },
-            //         { data: 'score2' },
-            //         { data: 'score3' },
-            //         { data: 'score4' },
-            //         { data: 'score5' },
-            //         { data: 'score6' }
-            //     ],
-            //     scrollX: true,
-            //     searching: false,
-            //     bLengthChange: false,
-            //     bInfo: false,
-            //     bPaginate: false,
-            //     columnDefs: [
-            //         { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
-            //     ],
-
-            // });
-
+            sub_code = i.sub_code
         });
 
+        axios.post("/scoreapi/getscore_header", { token, sub_code }).then(r => {
+            console.log(r)
+            r.data.data.forEach((i, k) => {
+                console.log(i)
+            })
 
-        if (r.data.info.itaccounttype_TH == "บุคลากร") {
+        })
+
+        if (r.data.info.itaccounttype_TH !== "บุคลากร") {
             document.getElementById("profile").innerHTML = `
                 <ul class="navbar">
                 <a class="getstarted scrollto" href="#"> ${r.data.info.firstname_TH} ${r.data.info.lastname_TH} </a>
