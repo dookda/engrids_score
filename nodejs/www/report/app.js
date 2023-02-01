@@ -139,7 +139,8 @@ let showCourse = (sub_code) => {
         select: {
             style: 'os',
             selector: 'td:first-child'
-        }
+        },
+        "scrollX": true
         // dom: 'Bfrtip',
         // buttons: [
         //     'excel', 'print'
