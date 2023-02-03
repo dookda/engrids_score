@@ -102,12 +102,12 @@ if (token) {
                                     <td>${i.student_id}</td>
                                     <td>${i.firstname_th}</td>
                                     <td>${i.lastname_th}</td>
-                                    <td>${i.score1}</td>
-                                    <td>${i.score2}</td>
-                                    <td>${i.score3}</td>
-                                    <td>${i.score4}</td>
-                                    <td>${i.score5}</td>
-                                    <td>${i.score6}</td>
+                                    <td>${i.score1 ? i.score1 : ""}</td>
+                                    <td>${i.score2 ? i.score2 : ""}</td>
+                                    <td>${i.score3 ? i.score3 : ""}</td>
+                                    <td>${i.score4 ? i.score4 : ""}</td>
+                                    <td>${i.score5 ? i.score5 : ""}</td>
+                                    <td>${i.score6 ? i.score6 : ""}</td>
                                 </tr>
                             </thead>
                         </table>
@@ -118,18 +118,30 @@ if (token) {
             // sub_code = i.sub_code
             await axios.post("/scoreapi/getscore_header", { token, sub_code: i.sub_code }).then(r => {
                 // console.log(r)
-                r.data.data.forEach((i, k) => {
-                    console.log(i, i.score1, k)
-                    document.getElementById(`score1_${k}`).innerHTML = i.score1;
-                    document.getElementById(`score2_${k}`).innerHTML = i.score2;
-                    document.getElementById(`score3_${k}`).innerHTML = i.score3;
-                    document.getElementById(`score4_${k}`).innerHTML = i.score4;
-                    document.getElementById(`score5_${k}`).innerHTML = i.score5;
-                    document.getElementById(`score6_${k}`).innerHTML = i.score6;
+                r.data.data.forEach((i) => {
+                    // console.log(i, i.score1, k)
+                    document.getElementById(`score1_${k}`).innerHTML = i.score1 !== "null" ? i.score1 : "";
+                    document.getElementById(`score2_${k}`).innerHTML = i.score2 !== "null" ? i.score2 : "";
+                    document.getElementById(`score3_${k}`).innerHTML = i.score3 !== "null" ? i.score3 : "";
+                    document.getElementById(`score4_${k}`).innerHTML = i.score4 !== "null" ? i.score4 : "";
+                    document.getElementById(`score5_${k}`).innerHTML = i.score5 !== "null" ? i.score5 : "";
+                    document.getElementById(`score6_${k}`).innerHTML = i.score6 !== "null" ? i.score6 : "";
                 })
 
             })
         });
+
+        if (r.data.data == "") {
+            document.getElementById("scorelist").innerHTML += ` <div class="col-12 col-lg-12">
+    <div class="icon-box2">
+        <div class=""> <img src="./../assets/img/not-found1.png" width="60px"></div> <br>
+        <h1 class="title2">ไม่พบข้อมูล</h1>
+        <div class="lable" style="font-size: 18px;">ไม่พบข้อมูลคะแนนรายวิชาของท่าน กรุณาเข้าตรวจสอบคะแนนใหม่อีกครั้ง
+        </div>
+        <br>
+    </div>
+</div>`
+        }
 
         if (r.data.info.itaccounttype_TH !== "บุคลากร") {
             document.getElementById("profile").innerHTML = `
@@ -137,9 +149,8 @@ if (token) {
                 <a class="getstarted scrollto" href="#"> ${r.data.info.firstname_TH} ${r.data.info.lastname_TH} </a>
                 <li><a class="nav-link scrollto" href="#" onclick="gotoInput()">กรอกคะแนน</a></li>
                 <li><a class="nav-link scrollto" href="#" onclick="gotoReport()">ดูคะแนน</a></li>
-                
-                <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"> <i class="bx bx-log-out"
-                style="font-size: larger;"></i> &nbsp; ออกจากระบบ</a></li>
+                <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"><span><i class="bx bx-log-out"
+                style="font-size: larger;"></i>&nbsp;ออกจากระบบ</span></a></li>
 
             </ul>`
         } else {
@@ -154,8 +165,17 @@ if (token) {
 } else {
     document.getElementById("profile").innerHTML = `
     <ul class="navbar">
-    <li><a class="getstarted scrollto" href="#" onclick="gotoLogin()" id="profile"> <i class="bx bx-log-out"
-    style="font-size: larger;"></i> &nbsp; เข้าสู่ระบบ</a></li>
+    <li><a class="getstarted scrollto" href="#" onclick="gotoLogin()" id="profile"> <span>><i class="bx bx-log-in"
+    style="font-size: larger;"></i> &nbsp; เข้าสู่ระบบ</span</a></li>
     </ul>`
+    document.getElementById("scorelist").innerHTML += ` <div class="col-12 col-lg-12">
+    <div class="icon-box2">
+        <div class="icon"><i class="bx bx-log-in" style="font-size: 42px;"></i></div>
+        <h1 class="title2">กรุณาเข้าสู่ระบบ</h1>
+        <div class="lable" style="font-size: 18px;">กรุณาเข้าสู่ระบบเพื่อตรวจสอบคะแนนของท่าน
+        </div>
+        <br>
+    </div>
+</div>`
 }
 

@@ -1,4 +1,3 @@
-
 let getCookie = (cname) => {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -45,21 +44,25 @@ let gotoIndex = () => {
     location.href = "./../index.html";
 }
 
+let gotoReport = () => {
+    location.href = "./../report/index.html";
+}
+
 let showList = () => {
     axios.post("/scoreapi/courselist", { token, lecturer_account }).then(r => {
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
         if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
             r.data.data.forEach(e => {
-                document.getElementById("list").innerHTML += `<div class="card mt-1 mb-2">
-                <div class="card-body">
+                document.getElementById("list").innerHTML += `<div class=" mt-1 mb-2">
+                <div class="card-body card-a" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;">
                     <div class="row"> 
-                        <div class="col-sm-6 align-self-center">
-                            <span class="card-text ">รายวิชา ${e.sub_code} ${e.sub_name}</span>
+                        <div class="col-sm-5 align-self-center">
+                            <span class="card-text">รายวิชา: <b> ${e.sub_code} ${e.sub_name} </b></span>
                         </div>
-                        <div class="col-sm-6">
-                            <button class="btn btn-success m-1" onclick="showCourse('${e.sub_code}')">แสดงคะแนน</button>
-                            <button class="btn btn-warning m-1" onclick="modalConfirm('${e.sub_code}', '${e.sub_name}')">ลบ</button>
+                        <div class="col-sm-7">
+                            <button class="btn btn-rscore m-1" onclick="showCourse('${e.sub_code}')">แสดงคะแนน</button>
+                            <button class="btn btn-delt m-1" onclick="modalConfirm('${e.sub_code}', '${e.sub_name}')">ลบ</button>
                         </div>
                     </div>
                 </div>
@@ -96,7 +99,7 @@ let showCourseHeader = (sub_code) => {
         for (const [key, value] of Object.entries(r.data.data[0])) {
             // console.log(`${key}: ${value}`);
             if (i > 6 && i < 13) {
-                $('#table').DataTable().columns(i).header().to$().text(value);
+                $('#table').DataTable().columns(i - 1).header().to$().text(value);
             }
             i++;
         }
@@ -116,7 +119,6 @@ let showCourse = (sub_code) => {
             destroy: true
         },
         columns: [
-            { data: 'pid' },
             { data: 'sub_code' },
             { data: 'sub_name' },
             { data: 'sub_sect' },
@@ -140,7 +142,10 @@ let showCourse = (sub_code) => {
             style: 'os',
             selector: 'td:first-child'
         },
-        "scrollX": true
+        "scrollX": true,
+        columnDefs: [
+            { className: 'text-center', targets: [6, 7, 8, 9, 10, 11] },
+        ],
         // dom: 'Bfrtip',
         // buttons: [
         //     'excel', 'print'
@@ -148,6 +153,7 @@ let showCourse = (sub_code) => {
         // responsive: true,
         // scrollX: true,
         // order: [[5, 'asc']],
+
     });
 
     showCourseHeader(sub_code);

@@ -1,0 +1,80 @@
+.card-b {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    /* border: 1px solid #9494947e; */
+    border-radius: 25px;
+}
+
+.card-a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid #d3d3d380;
+    border-radius: 15px;
+    /* background-color: #fff5f0b6; */
+}
+
+.btn-upload {
+    font-family: "Sarabun", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: 0.5s;
+    color: rgb(0, 0, 0);
+    background: #bae0ff;
+    cursor: pointer;
+}
+
+.btn-upload:hover {
+    color: rgb(0, 0, 0);
+    background: #83c6fd;
+}
+
+.btn-rscore {
+    font-family: "Sarabun", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: 0.5s;
+    margin-top: 30px;
+    color: #eb5d1e;
+    background: #fef5f1;
+    cursor: pointer;
+
+
+}
+
+.btn-rscore:hover {
+    color: #eb5d1e;
+    background: #fdf1eb;
+    /* border: 1px solid #fcc1a8; */
+}
+
+.btn-delt {
+    font-family: "Sarabun", sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    display: inline-block;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: 0.5s;
+    margin-top: 30px;
+    color: #474747;
+    background: #e7e7e7;
+    cursor: pointer;
+
+
+}
+
+.btn-delt:hover {
+    color: #302f2f;
+    background: #d4d4d4;
+    /* border: 1px solid #969696; */
+}

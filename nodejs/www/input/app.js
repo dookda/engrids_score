@@ -48,6 +48,7 @@ let gotoReport = () => {
     location.href = "./../report/index.html";
 }
 
+
 if (token) {
     axios.post('/scoreapi/getinfo', { token }).then(r => {
         // console.log(r);
@@ -75,7 +76,7 @@ if (token) {
                 document.getElementById("statusText").innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่";
                 statusModal.show();
             } else {
-                console.log("ok");
+                // console.log("ok");
             }
         } else {
             gotoLogin();
@@ -84,5 +85,10 @@ if (token) {
 } else {
     gotoLogin();
 }
+
+
+$("#detail").click(function () {
+    $("#scoremanual").modal('show')
+})
 
 

@@ -2,110 +2,213 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./style.css">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>กรอกคะแนน</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="./../assets/img/logogeo.png" rel="icon">
+    <link href="./../assets/img/logogeo.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=K2D:wght@300;400&family=Kanit:wght@200;300&family=Mitr:wght@300;400&family=Prompt:wght@200;300;400;600&family=Sarabun&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="./../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="./../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="./../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="./../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="./../assets/css/style.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container">
-            <a class="navbar-brand" href="#">คะแนนเก็บ</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <!-- <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li> -->
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div class="logo">
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <a class="getstarted scrollto" id="username"></a>
+                    <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoInput()">กรอกคะแนน</a></li>
+                    <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoReport()">ดูคะแนน</a></li>
+                    <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"><span><i class="bx bx-log-out"
+                                    style="font-size: larger;"></i>&nbsp;ออกจากระบบ</span></a></li>
                 </ul>
-                <div class="d-flex" role="search">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <span class="form-label" id="username"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" onclick="gotoReport()">ดูคะแนน</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="gotoLogout()">logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+
+        </div>
+    </header><!-- End Header -->
+
+    <main id="main">
+
+        <!-- ======= Breadcrumbs Section ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mt-20">
+                    <h2 class="ff-Sarabun" style="color: #4e4039"> <b> ระบบกรอกคะแนน
+                            สำหรับบุคลากร</b></h2>
+                </div>
+            </div>
+        </section>
+        <br>
+        <br>
+        <div class="container card-b" style="box-shadow: rgba(82, 81, 81, 0.2) 0px 10px 50px;">
+            <div class="card-b">
+                <div class="card-body">
+                    ท่านสามารถดาวน์โหลดรูปแบบไฟล์กรอกคะแนนได้จาก <a href="./studentlist_template.xlsx">Download
+                        Template</a>
+                    หรือ
+                    <a href="https://www1.reg.cmu.ac.th/registrationoffice/searchcourse.php">Reg CMU</a>
+                    <br>
+                    <span><a type="button" class="btn btn-manual" id="detail"><i class="bi bi-journal-album"></i>&nbsp;
+                            คู่มืออัพโหลดข้อมูลคะแนน</a></span>
+                    <!-- <img src="./Screenshot 2566-01-30 at 08.19.22.png" alt="" srcset=""> -->
+                </div>
+            </div>
+
+            <form class="mt-4" action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
+                <input type="hidden" name="lecturer_fname" id="lecturer_fname">
+                <input type="hidden" name="lecturer_lname" id="lecturer_lname">
+                <input type="hidden" name="lecturer_account" id="lecturer_account">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label"> <b>เลือกไฟล์ Excel</b> </label>
+                    <input class="form-control" type="file" name="file" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"> <b>รหัสวิชา:</b>
+                    </label>
+                    <input class="form-control" type="text" name="sub_code" id="sub_code" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">
+                        <b>ชื่อวิชา:</b></label>
+                    <input class="form-control" type="text" name="sub_name" id="sub_name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">
+                        <b>Section:</b></label>
+                    <select class="form-select" name="sub_sect" id="sub_sect">
+                        <option value="01">01</option selected>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                    </select>
+                </div>
+                <br>
+                <input class=" btn btn-upload m-1" type="submit" value="ส่งข้อมูล">
+                <!-- <button class="btn btn-rscore m-1" type="button" onclick="gotoReport()">ดูคะแนน</button> -->
+
+            </form>
+        </div>
+    </main><!-- End #main -->
+
+    <div class="modal fade" id="statusInfo" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p id="statusText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
                 </div>
             </div>
         </div>
-    </nav>
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-body">
-                ดาวโหลด <a href="./studentlist_template.xlsx">template</a> หรือ
-                <a href="https://www1.reg.cmu.ac.th/registrationoffice/searchcourse.php">reg cmu</a> โดยเลือก excel
-                เป็นแบบ Student Point Record <br>
-                <img src="./Screenshot 2566-01-30 at 08.19.22.png" alt="" srcset="">
+    </div>
+
+    <div class="modal fade" id="scoremanual" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-journal-album"></i>&nbsp;
+                        <b>คู่มือการอัพโหลดข้อมูลคะแนนเก็บ/คะแนนสอบของนักศึกษา</b>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col">
+                        1. กรุณาดาวน์โหลดรายชื่อของนักศึกษาในกระบวนวิชาที่ต้องการ จากข้อมูลในระบบสำนักทะเบียน
+                        <a href="https://www1.reg.cmu.ac.th/registrationoffice/searchcourse.php">https://www1.reg.cmu.ac.th/registrationoffice/searchcourse.php
+                        </a>
+                        โดยเลือกประเภทไฟล์แบบ <b>EXCEL
+                            (Student Point Record)</b>
+                        <br>
+                        <div class="text-center">
+                            <img src="./../assets/img/score_manual1.png" width="50%">
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        2. เมื่อดาวน์โหลดไฟล์ XLS มาเรียบร้อยแล้ว ท่านสามารถกรอกชื่อกิจกรรมที่เก็บคะแนนในช่อง 1-6
+                        (คอลัมน์ E7-J7) และกรอกคะแนนนักศึกษา
+                        <p style="color: red; font-size: 12px;">** หมายเหตุ เนื่องจากข้อจำกัดของระบบ
+                            คณาจารย์สามารถกรอกคะแนนเก็บได้เพียง
+                            6 ช่องตามรูปเท่านั้น
+                            และข้อมูลชื่อคอลัมน์จำเป็นต้องอยู่ที่แถวที่ 7 ส่วนคะแนนที่กรอกจำเป็นต้องอยู่ในแถวที่ 8
+                            เป็นต้นไป <br>
+                            *** คณาจารย์สามารถอัพโหลดไฟล์ข้อมูลใหม่ได้ตลอดตามที่ต้องการ
+                        </p>
+                        <div class="text-center">
+                            <img src="./../assets/img/score_manual2.png" width="50%">
+                        </div>
+                        <div class="text-center">
+                            <img src="./../assets/img/down-arrow.png" width="5%">
+                        </div>
+                        <div class="text-center">
+                            <img src="./../assets/img/score_manual3.png" width="50%">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+                </div>
             </div>
         </div>
-        <form class="mt-4" action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
-            <input type="hidden" name="lecturer_fname" id="lecturer_fname">
-            <input type="hidden" name="lecturer_lname" id="lecturer_lname">
-            <input type="hidden" name="lecturer_account" id="lecturer_account">
-            <div class="mb-3">
-                <label for="formFile" class="form-label">เลือกไฟล์ Excel</label>
-                <input class="form-control" type="file" name="file" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">รหัสวิชา</label>
-                <input class="form-control" type="text" name="sub_code" id="sub_code" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">ชื่อวิชา</label>
-                <input class="form-control" type="text" name="sub_name" id="sub_name" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">section</label>
-                <select class="form-select" name="sub_sect" id="sub_sect">
-                    <option value="01">01</option selected>
-                    <option value="02">02</option>
-                    <option value="03">03</option>
-                    <option value="04">04</option>
-                    <option value="05">05</option>
-                </select>
-            </div>
-
-            <input class="btn btn-success m-1" type="submit" value="Upload">
-            <button class="btn btn-light m-1" type="button" onclick="gotoReport()">ดูคะแนน</button>
-
-        </form>
     </div>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Vendor JS Files -->
+    <script src="./../assets/vendor/aos/aos.js"></script>
+    <script src="./../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="./../assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="./../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="./../assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="./../assets/vendor/php-email-form/validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="./../assets/js/main.js"></script>
+    <script src="./app.js"></script>
+
 </body>
-
-<div class="modal fade" id="statusInfo" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p id="statusText"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="./app.js"></script>
 
 </html>
