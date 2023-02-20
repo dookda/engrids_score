@@ -49,7 +49,8 @@
                 <ul>
                     <a class="getstarted scrollto" id="username"></a>
                     <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoInput()">กรอกคะแนน</a></li>
-                    <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoReport()">ดูคะแนน</a></li>
+                    <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoReport()">ตรวจสอบคะแนน</a>
+                    </li>
                     <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"><span><i class="bx bx-log-out"
                                     style="font-size: larger;"></i>&nbsp;ออกจากระบบ</span></a></li>
                 </ul>
@@ -86,7 +87,7 @@
                 </div>
             </div>
 
-            <form class="mt-4" action="/scoreapi/upload" method="post" enctype="multipart/form-data" on>
+            <form class="mt-4" action="/p4000/scoreapi/upload" method="post" enctype="multipart/form-data" on>
                 <input type="hidden" name="lecturer_fname" id="lecturer_fname">
                 <input type="hidden" name="lecturer_lname" id="lecturer_lname">
                 <input type="hidden" name="lecturer_account" id="lecturer_account">

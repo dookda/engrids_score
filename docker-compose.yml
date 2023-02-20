@@ -26,4 +26,4 @@ services:
       - ./nodejs:/app/nodejs
     ports:
       - 80:3000
-    command: bash -c "npm i && npm i -g nodemon && npm i -g pm2 && nodemon server.js"
+    command: bash -c "npm i && npm i -g nodemon && nodemon server.js"

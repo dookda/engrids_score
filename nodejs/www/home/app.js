@@ -38,13 +38,13 @@ let gotoLogout = () => {
 }
 
 let gotoInput = () => {
-    location.href = "./../input/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/input/index.html";
 }
 
 let gotoIndex = () => {
-    location.href = "./../index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/index.html";
 }
 
 let gotoReport = () => {
-    location.href = "./../report/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/report/index.html";
 }

@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
     <link rel="stylesheet" href="./style.css">
-    <title>ดูคะแนน</title>
+    <title>ระบบคะแนนเก็บรายวิชา
+        สำหรับบุคลากร</title>
 
     <!-- Favicons -->
     <link href="./../assets/img/logogeo.png" rel="icon">
@@ -48,7 +49,7 @@
             <ul>
                 <a class="getstarted scrollto" id="username"></a>
                 <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoInput()">กรอกคะแนน</a></li>
-                <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoReport()">ดูคะแนน</a></li>
+                <li><a class="nav-link scrollto" style="cursor: pointer;" onclick="gotoReport()">ตรวจสอบคะแนน</a></li>
                 <li><a class="nav-link scrollto" href="#" onclick="gotoLogout()"><span><i class="bx bx-log-out"
                                 style="font-size: larger;"></i>&nbsp;ออกจากระบบ</span></a></li>
             </ul>
@@ -64,7 +65,7 @@
         <section class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mt-20">
-                    <h2 class="ff-Sarabun" style="color: #4e4039"> <b> ระบบดูคะแนนเก็บรายวิชา
+                    <h2 class="ff-Sarabun" style="color: #4e4039"> <b> ระบบคะแนนเก็บรายวิชา
                             สำหรับบุคลากร</b></h2>
                 </div>
             </div>
@@ -83,57 +84,100 @@
                                 class="bi bi-file-earmark-arrow-up"></i>&nbsp;อัพโหลดคะแนนเก็บ</button>
                     </div>
                     <br>
-                    <div id="list"> </div>
-                </div>
-                <!-- </div> -->
 
-                <div class="card-a" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;">
-                    <div class="card-body mb-2">
-                        <div class="table-responsive">
-                            <table id="table" class="display nowrap" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>รหัสวิชา</th>
-                                        <th>ชื่อวิชา</th>
-                                        <th>ตอน</th>
-                                        <th>รหัสนักศึกษา</th>
-                                        <th>ชื่อ</th>
-                                        <th>นามสกุล</th>
-                                        <th>คะแนน1</th>
-                                        <th>คะแนน2</th>
-                                        <th>คะแนน3</th>
-                                        <th>คะแนน4</th>
-                                        <th>คะแนน5</th>
-                                        <th>คะแนน6</th>
-                                        <th>วันที่</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                    <!-- <div class="col" id="list"></div> -->
+                    <div class="card-body">
+                        <div class=" mt-1 mb-2">
+                            <div class="card-body card-a" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-lg mb-3 col-sm-10"
+                                            aria-label=".form-select-lg example" id="list">
+                                            <option selected>คลิกเลือกรายวิชาที่ท่านต้องการตรวจสอบ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 text-center" id="showscore">
+                                        <button class="btn btn-rscore m-1" onclick="showCourse()">แสดงคะแนน</button>
+                                        <button class="btn btn-delt m-1" onclick="modalConfirm()">ลบ</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col card-a" style="box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;" id="showtable">
+                            <div class="card-body mb-2">
+                                <div class="table-responsive">
+                                    <table id="table" class="display nowrap" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>รหัสวิชา</th>
+                                                <th>ชื่อวิชา</th>
+                                                <th>ตอน</th>
+                                                <th>รหัสนักศึกษา</th>
+                                                <th>ชื่อ</th>
+                                                <th>นามสกุล</th>
+                                                <th>คะแนน1</th>
+                                                <th>คะแนน2</th>
+                                                <th>คะแนน3</th>
+                                                <th>คะแนน4</th>
+                                                <th>คะแนน5</th>
+                                                <th>คะแนน6</th>
+                                                <th>วันที่</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="modal fade" id="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="bi bi-exclamation-circle"></i> <b>ยืนยันการลบ</b>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                ท่านต้องการยืนยันการลบ<br>
+                                รายวิชา <b><span id="subname"></span></b>
+                                <input type="hidden" id="sub_code">
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
+                                    onclick="deleteCourse()">ยืนยัน</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">ยกเลิก</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal fade" id="modal" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"><i class="bi bi-exclamation-circle"></i> <b>ยืนยันการลบ</b></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            ท่านต้องการยืนยันการลบ<br>
-                            รายวิชา <b><span id="subname"></span></b>
-                            <input type="hidden" id="sub_code">
-                        </div>
-                        <div class="modal-footer">
 
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal"
-                                onclick="deleteCourse()">ยืนยัน</button>
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">ยกเลิก</button>
+                <div class="modal fade" id="modalselect" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><i class="bi bi-exclamation-circle"></i> <b>คลิกเลือกรายวิชา</b>
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                กรุณาคลิกเลือกรายวิชาที่ท่านต้องการ <b><span id="check"></span><br></b>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">ปิด</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
     </main>
 </body>
 <br>

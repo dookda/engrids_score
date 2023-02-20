@@ -14,15 +14,16 @@ let setCookie = (token, cmuitaccount, minute) => {
 }
 
 let itcmuaccount = (token) => {
-    axios.post("/scoreapi/getinfo", { token }).then(r => {
+    axios.post("/p4000/scoreapi/getinfo", { token }).then(r => {
         console.log(r);
         setCookie(token, r.data.info.cmuitaccount, 10)
-        window.location.replace("./../" + state);
+        window.location.replace("https://engrids.soc.cmu.ac.th/p4000/" + state + "/index.html");
     })
 }
 
 if (code) {
-    axios.post('/scoreapi/gettoken', { code }).then(r => {
+    // console.log(code);
+    axios.post('/p4000/scoreapi/gettoken', { code }).then(r => {
         itcmuaccount(r.data)
     })
 }

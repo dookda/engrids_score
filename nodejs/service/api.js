@@ -14,7 +14,7 @@ const fs = require('fs');
 const loginMiddleware = (req, res, next) => {
     const data = {
         code: req.body.code,
-        redirect_uri: "http://localhost/login/index.html",
+        redirect_uri: "https://engrids.soc.cmu.ac.th/p4000/login/index.html",
         client_id: "vfue5sa0rvFkqkxQyj3KEjjqhrVrphFQBd2Mf0Nz",
         client_secret: "g07dxSNJN48n6WXk6d7RGWNgZ1UkuXJJGECQnf2B",
         grant_type: "authorization_code"
@@ -32,6 +32,7 @@ const loginMiddleware = (req, res, next) => {
 }
 
 app.post("/scoreapi/gettoken", loginMiddleware, (req, res) => {
+    console.log("dad");
     res.status(200).json(req.status)
 })
 
@@ -149,9 +150,9 @@ app.post("/scoreapi/upload", upload.single("file"), (req, res) => {
     let { lecturer_fname, lecturer_lname, lecturer_account, sub_code, sub_name, sub_sect } = req.body;
     insetXlsxtoDb(req.file.filename, lecturer_fname, lecturer_lname, lecturer_account, pid, sub_code, sub_name, sub_sect).then(r => {
         if (r == "success") {
-            res.redirect('http://localhost/report/index.html')
+            res.redirect('https://engrids.soc.cmu.ac.th/p4000/report/index.html')
         } else {
-            res.redirect('http://localhost/input/index.html?status=' + r)
+            res.redirect('https://engrids.soc.cmu.ac.th/p4000/index.html?status=' + r)
         }
     });
 });
@@ -159,7 +160,7 @@ app.post("/scoreapi/upload", upload.single("file"), (req, res) => {
 
 app.post("/scoreapi/courselist", getUserinfo, (req, res) => {
     const { lecturer_account } = req.body;
-    const sql = `SELECT DISTINCT sub_code, sub_name FROM score WHERE lecturer_account='${lecturer_account}' `;
+    const sql = `SELECT DISTINCT sub_code, sub_name, sub_sect FROM score WHERE lecturer_account='${lecturer_account}' `;
 
     db.query(sql).then(r => {
         res.status(200).json({
@@ -170,9 +171,10 @@ app.post("/scoreapi/courselist", getUserinfo, (req, res) => {
 });
 
 app.post("/scoreapi/getdata_header", getUserinfo, (req, res) => {
-    const { lecturer_account, sub_code } = req.body;
+    const { lecturer_account, sub_code, sub_sect } = req.body;
 
-    const sql = `SELECT pid,sub_code,sub_name,sub_sect,student_id,firstname_th,lastname_th,score1,score2,score3,score4,score5,score6,dt FROM score_header WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
+    const sql = `SELECT pid,sub_code,sub_name,sub_sect,student_id,firstname_th,lastname_th,score1,score2,score3,score4,score5,score6,dt 
+    FROM score_header WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'and sub_sect='${sub_sect}'`;
     db.query(sql).then(r => {
         res.status(200).json({ data: r.rows });
     });
@@ -202,10 +204,10 @@ app.post("/scoreapi/getscore", getUserinfo, (req, res) => {
 });
 
 app.post("/scoreapi/getscore_header", getUserinfo, (req, res) => {
-    const { sub_code } = req.body;
+    const { sub_code, sub_sect } = req.body;
     // console.log(req.info.data);
     // const sql = `SELECT * FROM score WHERE student_id='${req.info.data.student_id}'`;
-    const sql = `SELECT * FROM score_header WHERE sub_code='${sub_code}'`;
+    const sql = `SELECT * FROM score_header WHERE sub_code='${sub_code}' and sub_sect='${sub_sect}'`;
     console.log(sql);
     db.query(sql).then(r => {
         res.status(200).json({

@@ -37,24 +37,24 @@ let gotoLogout = () => {
 }
 
 let gotoInput = () => {
-    location.href = "https://engrids.soc.cmu.ac.th/p4000input/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/input/index.html";
 }
 
 let gotoIndex = () => {
-    location.href = "https://engrids.soc.cmu.ac.th/p4000index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/index.html";
 }
 
 let gotoReport = () => {
-    location.href = "https://engrids.soc.cmu.ac.th/p4000report/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/report/index.html";
 }
 
 
 if (token) {
-    axios.post('/scoreapi/getinfo', { token }).then(r => {
+    axios.post('/p4000/scoreapi/getinfo', { token }).then(r => {
         // console.log(r);
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
-        if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
+        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
             const currentUrl = new URL(window.location.href);
             const param = currentUrl.searchParams.get("status");
 
