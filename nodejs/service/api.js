@@ -220,9 +220,11 @@ app.post("/scoreapi/getscore_header", getUserinfo, (req, res) => {
 app.post("/scoreapi/deletecourse", getUserinfo, (req, res) => {
     const { lecturer_account, sub_code } = req.body
     const sql = `DELETE FROM score WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
-
-    db.query(sql).then(r => {
-        res.status(200).json({ data: "remove success" });
+    db.query(sql).then(() => {
+        const sql_header = `DELETE FROM score_header WHERE lecturer_account='${lecturer_account}' AND sub_code='${sub_code}'`;
+        db.query(sql_header).then(() => {
+            res.status(200).json({ data: "remove success" });
+        })
     });
 });
 
