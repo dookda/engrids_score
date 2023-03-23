@@ -226,6 +226,4 @@ app.post("/scoreapi/deletecourse", getUserinfo, (req, res) => {
     });
 });
 
-
-
 module.exports = app;
