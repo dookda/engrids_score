@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 4000;
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -19,9 +19,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 const api = require('./service/api');
-app.use(api);
+app.use('/p4000', api);
 
-app.use('/', express.static('www'))
+app.use('/p4000', express.static('www'))
 
 app.listen(port, () => {
     console.log(`http://localhost:${port}`);

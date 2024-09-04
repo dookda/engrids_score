@@ -24,7 +24,7 @@ let refreshPage = () => {
 let gotoLogin = () => {
     let url = 'https://oauth.cmu.ac.th/v1/Authorize.aspx?response_type=code' +
         '&client_id=vfue5sa0rvFkqkxQyj3KEjjqhrVrphFQBd2Mf0Nz' +
-        '&redirect_uri=http://localhost/login/index.html' +
+        '&redirect_uri=https://engrids.soc.cmu.ac.th/p4000/login/index.html' +
         '&scope=cmuitaccount.basicinfo' +
         '&state=input'
     window.location.href = url;
@@ -37,23 +37,24 @@ let gotoLogout = () => {
 }
 
 let gotoInput = () => {
-    location.href = "./../input/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/input/index.html";
 }
 
 let gotoIndex = () => {
-    location.href = "./../index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/index.html";
 }
 
 let gotoReport = () => {
-    location.href = "./../report/index.html";
+    location.href = "https://engrids.soc.cmu.ac.th/p4000/report/index.html";
 }
 
+
 if (token) {
-    axios.post('/scoreapi/getinfo', { token }).then(r => {
+    axios.post('/p4000/scoreapi/getinfo', { token }).then(r => {
         // console.log(r);
         document.getElementById("username").innerHTML = `${r.data.info.firstname_TH} ${r.data.info.lastname_TH}`;
 
-        if (token && r.data.info.itaccounttype_TH !== "บุคลากร") {
+        if (token && r.data.info.itaccounttype_TH == "บุคลากร") {
             const currentUrl = new URL(window.location.href);
             const param = currentUrl.searchParams.get("status");
 
@@ -75,7 +76,7 @@ if (token) {
                 document.getElementById("statusText").innerHTML = "เกิดข้อผิดพลาด กรุณาลองใหม่";
                 statusModal.show();
             } else {
-                console.log("ok");
+                // console.log("ok");
             }
         } else {
             gotoLogin();
@@ -84,5 +85,10 @@ if (token) {
 } else {
     gotoLogin();
 }
+
+
+$("#detail").click(function () {
+    $("#scoremanual").modal('show')
+})
 
 
