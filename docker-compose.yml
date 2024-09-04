@@ -25,5 +25,5 @@ services:
     volumes:
       - ./nodejs:/app/nodejs
     ports:
-      - 4000:3000
+      - 4000:4000
     command: bash -c "npm i && npm i -g nodemon && npm i -g pm2 && nodemon server.js"
