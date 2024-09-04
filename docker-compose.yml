@@ -5,7 +5,7 @@ services:
     container_name: score_postgis
     restart: always
     environment:
-      - POSTGRES_DB=maindb
+      # - POSTGRES_DB=maindb
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1234
     volumes:
